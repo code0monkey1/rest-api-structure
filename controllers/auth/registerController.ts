@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { RegisterUserRequest, RegisterUserResponse } from '../../types';
-import { registrationSchema } from '../../validation';
+import { registerSchema } from '../../validation';
 const registerUser = (
   req: Request<RegisterUserRequest>,
   res: Response<RegisterUserResponse>,
@@ -11,7 +11,7 @@ const registerUser = (
     //Checklist
 
     //[ ] authorize the request
-    const validatedData = registrationSchema.parse(req.body);
+    const validatedData = registerSchema.parse(req.body);
 
     console.log('body', validatedData);
 
