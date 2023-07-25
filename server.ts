@@ -5,8 +5,13 @@ dotenv.config();
 import { APP_PORT } from './config';
 
 import express from 'express';
+import routes from './src/routes';
 
 const server = express();
+
+server.use(express.json());
+
+server.use('/api', routes);
 
 const PORT = APP_PORT || 3000;
 
