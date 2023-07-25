@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { RegisterUserRequest, RegisterUserResponse } from '../../types';
 import { registerSchema } from '../../validation';
 const registerUser = async (
@@ -18,6 +19,13 @@ const registerUser = async (
 
     //[ ] check if user is in database already
 
+    const exists = await User.exists({ email: req.body.email });
+
+    if (exists) {
+      return next(
+        CustomErrorHandler.alreadyExists('This email is already taken')
+      );
+    }
     // [ ] validate the request
     //[ ] prepare model
     //[ ] store in database
