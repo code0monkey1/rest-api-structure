@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { RegisterUserRequest, RegisterUserResponse } from '../../types';
 import { registerSchema } from '../../validation';
-const registerUser = (
+const registerUser = async (
   req: Request<RegisterUserRequest>,
   res: Response<RegisterUserResponse>,
   next: NextFunction
@@ -11,7 +11,9 @@ const registerUser = (
     //Checklist
 
     //[ ] authorize the request
-    const validatedData = registerSchema.parse(req.body);
+    const body = (await req.body) as RegisterUserRequest;
+
+    const validatedData = registerSchema.parse(body);
 
     console.log('body', validatedData);
 
@@ -23,7 +25,7 @@ const registerUser = (
     //[ ] generate jwt
     // [ ] send response
 
-    res.send({ message: 'valid' });
+    res.send({ message: 'valid' } as RegisterUserResponse);
   } catch (err) {
     let errorMessage = 'error: ';
     if (err instanceof ZodError) {
@@ -32,10 +34,8 @@ const registerUser = (
         .join(', ');
     }
     res.status(401).json({ message: errorMessage });
-    next(err);
+    next(errorMessage);
   }
-
-  next();
 };
 
 export default {
