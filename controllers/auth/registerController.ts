@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { ZodError } from 'zod';
 import { RegisterUserRequest, RegisterUserResponse } from '../../types';
 import { registerSchema } from '../../validation';
 const registerUser = async (
@@ -27,14 +26,8 @@ const registerUser = async (
 
     res.send({ message: 'valid' } as RegisterUserResponse);
   } catch (err) {
-    let errorMessage = 'error: ';
-    if (err instanceof ZodError) {
-      errorMessage += err.issues
-        .map((issue) => `${issue.path.join('.')} ${issue.message}`)
-        .join(', ');
-    }
-    res.status(401).json({ message: errorMessage });
-    next(errorMessage);
+    // this will be caught by the errorHandler middleware
+    return next(err);
   }
 };
 
