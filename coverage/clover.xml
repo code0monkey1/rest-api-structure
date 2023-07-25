@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1690311343559" clover="3.2.0">
-  <project timestamp="1690311343559" name="All files">
+<coverage generated="1690311507086" clover="3.2.0">
+  <project timestamp="1690311507086" name="All files">
     <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="6" elements="16" coveredelements="16" complexity="0" loc="10" ncloc="10" packages="2" files="2" classes="2"/>
     <package name="rest-api-structure">
       <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
