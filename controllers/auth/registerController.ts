@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { RegisterUserRequest, RegisterUserResponse } from '../../types';
-import validation from '../../validation';
+import { registrationSchema } from '../../validation';
 const registerUser = (
   req: Request<RegisterUserRequest>,
   res: Response<RegisterUserResponse>,
@@ -9,16 +9,17 @@ const registerUser = (
 ) => {
   //Checklist
 
-  /* [ ] validate the request
-     [ ] authorize the request
-     [ ] check if user is in database already
-     [ ] prepare model
-     [ ] store in database
-     [ ] generate jwt
-     [ ] send response
-   */
+  //[ ] authorize the request
+  //[ ] check if user is in database already
+  // [ ] validate the request
+  //[ ] prepare model
+  //[ ] store in database
+  //[ ] generate jwt
+  // [ ] send response
+
   try {
-    const validatedData = validation.registrationSchema.parse(req.body);
+    const validatedData = registrationSchema.parse(req.body);
+
     console.log('body', validatedData);
 
     res.send({ message: 'valid' });
