@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import { NextFunction, Request, Response } from 'express';
 import { UserModel } from '../../models';
-import { IUser } from '../../models/UserModel';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import JwtService from '../../services/JwtService';
 import { RegisterUserRequest } from '../../types';
@@ -24,7 +23,7 @@ const loginUser = async (
     password
   );
 
-  const user: IUser | null = await UserModel.findOne({ email });
+  const user = await UserModel.findOne({ email });
 
   console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
 
