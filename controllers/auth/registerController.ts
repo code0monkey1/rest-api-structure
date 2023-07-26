@@ -14,7 +14,7 @@ const registerUser = async (
   try {
     //Checklist
 
-    //!! [ ] authorize the request
+    //?? [ ] authorize the request
 
     const body: unknown = await req.body;
 
@@ -42,19 +42,20 @@ const registerUser = async (
 
     //[ ] prepare model
 
-    //[ ] store in database
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     const hashedPassword = await bcrypt.hash(validatedData.password, 10);
-    // Store hash in your password DB.
 
-    const newUser: IUser = await UserModel.create({
+    const userToBeSaved = {
       username: validatedData.username,
       email: validatedData.email,
       password: hashedPassword as string,
       role: 'whatever',
-    });
+    };
+
+    //[ ] store in database
+
+    const newUser: IUser = await UserModel.create(userToBeSaved);
 
     console.log('new user created', JSON.stringify(newUser, null, 3));
 
