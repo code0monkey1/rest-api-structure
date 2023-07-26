@@ -4,12 +4,14 @@ import { UserModel } from '../../models';
 import { IUser } from '../../models/UserModel';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import JwtService from '../../services/JwtService';
-import { RegisterUserRequest, RegisterUserResponse } from '../../types';
+import { RegisterUserRequest } from '../../types';
 import { loginSchema } from '../../validation';
+
+type LoginResponse = { access_token: string };
 
 const loginUser = async (
   req: Request<RegisterUserRequest>,
-  _res: Response<RegisterUserResponse>,
+  res: Response<LoginResponse>,
   next: NextFunction
 ) => {
   const { email, password } = loginSchema.parse(req.body);
@@ -30,8 +32,15 @@ const loginUser = async (
 
   // [ ] sign jwt
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  await JwtService.sign({ _id: user._id, role: user.role });
+  const access_token = await JwtService.sign({
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    _id: user._id,
+    role: user.role,
+  });
+
+  res.json({
+    access_token,
+  });
 };
 
 export default {
