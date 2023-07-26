@@ -41,7 +41,7 @@ const registerUser = async (
       );
     }
 
-    //[ ] prepare model
+    //[+] prepare model
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
@@ -54,13 +54,13 @@ const registerUser = async (
       role: 'whatever',
     };
 
-    //[ ] store in database
+    //[+] store in database
 
     const newUser: IUser = new UserModel(user);
 
     console.log('new user created', JSON.stringify(newUser, null, 3));
 
-    //[ ] generate jwt
+    //[+] generate jwt
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const access_token = await JwtService.sign({
@@ -69,7 +69,7 @@ const registerUser = async (
       role: newUser.role,
     });
 
-    // [ ] send response
+    // [+] send response
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     res.send({ message: 'valid', access_token });
   } catch (err) {

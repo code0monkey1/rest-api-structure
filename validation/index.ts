@@ -19,3 +19,8 @@ export const registerSchema = z
   });
 
 registerSchema.refine((obj) => obj.password != obj.repeat_password);
+
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});

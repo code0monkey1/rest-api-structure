@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express';
-import { registerController } from '../../controllers';
+import { loginController, registerController } from '../../controllers';
 
 const router = express.Router();
 
-// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/register', registerController.registerUser);
+
+router.post('/login', loginController.loginUser);
 
 export default router;

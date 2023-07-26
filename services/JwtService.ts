@@ -4,7 +4,7 @@ import { JWT_SECRET } from '../config';
 class JwtService {
   // eslint-disable-next-line @typescript-eslint/require-await
   static async sign(
-    payload: string | object,
+    payload: { _id: string; role: string },
     expiry = '60s',
     secret = JWT_SECRET as string
   ) {
@@ -12,7 +12,9 @@ class JwtService {
     return jwt.sign(payload, secret, { expiresIn: expiry });
   }
 
-  verify = () => {};
+  // static async verify(email: string, password: string) {
+  //   // const match = await bcrypt;
+  // }
 }
 
 export default JwtService;
