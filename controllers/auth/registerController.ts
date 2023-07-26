@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
+import JwtService from '../../services/JwtService';
 import { RegisterUserRequest, RegisterUserResponse } from '../../types';
 import { registerSchema } from '../../validation';
 
@@ -55,14 +56,22 @@ const registerUser = async (
 
     //[ ] store in database
 
-    const newUser: IUser = await UserModel.create(user);
+    const newUser: IUser = new UserModel(user);
 
     console.log('new user created', JSON.stringify(newUser, null, 3));
 
     //[ ] generate jwt
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const access_token = await JwtService.sign({
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      _id: newUser._id,
+      role: newUser.role,
+    });
+
     // [ ] send response
-    res.send({ message: 'valid' });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    res.send({ message: 'valid', access_token });
   } catch (err) {
     // this will be caught by the errorHandler middleware
     return next(err);

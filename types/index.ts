@@ -7,4 +7,5 @@ export interface RegisterUserRequest {
 
 export interface RegisterUserResponse {
   message: string;
+  access_token: string;
 }
