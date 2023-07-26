@@ -14,6 +14,8 @@ const loginUser = async (
   res: Response<LoginResponse>,
   next: NextFunction
 ) => {
+  //[+] validate login user schema
+
   const { email, password } = loginSchema.parse(req.body);
 
   const user: IUser | null = await UserModel.findOne({ email });
@@ -22,7 +24,7 @@ const loginUser = async (
     return next(CustomErrorHandler.wrongUserCredentials());
   }
 
-  //[ ] verify if password matches
+  //[+] verify if password matches
 
   const match = await bcrypt.compare(password, user.password);
 
@@ -30,7 +32,7 @@ const loginUser = async (
     return next(CustomErrorHandler.userAuthFailed());
   }
 
-  // [ ] sign jwt
+  // [+] sign jwt
 
   const access_token = await JwtService.sign({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
