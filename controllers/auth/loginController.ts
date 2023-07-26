@@ -14,9 +14,15 @@ const loginUser = async (
   res: Response<LoginResponse>,
   next: NextFunction
 ) => {
-  //[+] validate login user schema
+  //[+] validate login user schema¯
 
   const { email, password } = loginSchema.parse(req.body);
+
+  console.log(
+    '🚀 ~ file: loginController.ts:20 ~  email, password :',
+    email,
+    password
+  );
 
   const user: IUser | null = await UserModel.findOne({ email });
 
