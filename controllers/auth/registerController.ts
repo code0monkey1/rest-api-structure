@@ -49,7 +49,7 @@ const registerUser = async (
     const user = {
       username,
       email,
-      password: hashedPassword as string,
+      password: hashedPassword,
       role: 'whatever',
     };
 
