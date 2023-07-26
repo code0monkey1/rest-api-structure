@@ -19,12 +19,12 @@ const registerUser = async (
 
     const body: unknown = await req.body;
 
-    // [ ] validate the request
+    // [+] validate the request
     const validatedData: RegisterUserRequest = registerSchema.parse(body);
 
     console.log('body', validatedData);
 
-    //[ ] check if user is in database already
+    //[-] check if user is in database already
 
     const { username, email, password } = validatedData;
 
