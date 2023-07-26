@@ -15,7 +15,7 @@ const registerUser = async (
   try {
     //Checklist
 
-    //?? [ ] authorize the request
+    //[ ] authorize the request
 
     const body: unknown = await req.body;
 
@@ -24,7 +24,7 @@ const registerUser = async (
 
     console.log('body', validatedData);
 
-    //[-] check if user is in database already
+    //[+] check if user is in database already
 
     const { username, email, password } = validatedData;
 
