@@ -25,7 +25,7 @@ const registerUser = async (
 
     //[ ] check if user is in database already
 
-    const email = validatedData.email;
+    const { username, email, password } = validatedData;
 
     /* The line `const userExists = await UserModel.exists({ email });` is checking if a user with the
    given email already exists in the database. It uses the `exists` method of the `UserModel` to
@@ -44,18 +44,18 @@ const registerUser = async (
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    const hashedPassword = await bcrypt.hash(validatedData.password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const userToBeSaved = {
-      username: validatedData.username,
-      email: validatedData.email,
+    const user = {
+      username,
+      email,
       password: hashedPassword as string,
       role: 'whatever',
     };
 
     //[ ] store in database
 
-    const newUser: IUser = await UserModel.create(userToBeSaved);
+    const newUser: IUser = await UserModel.create(user);
 
     console.log('new user created', JSON.stringify(newUser, null, 3));
 
