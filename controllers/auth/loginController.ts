@@ -19,6 +19,7 @@ const loginUser = async (
   const { email, password } = loginSchema.parse(req.body);
 
   const user: IUser | null = await UserModel.findOne({ email });
+  console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
 
   if (!user) {
     return next(CustomErrorHandler.wrongUserCredentials());
