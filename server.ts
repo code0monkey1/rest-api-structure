@@ -5,8 +5,18 @@ dotenv.config();
 import { APP_PORT } from './config';
 
 import express from 'express';
+
 import errorHandler from './middlewares/errorHandler';
 import routes from './src/routes';
+import { connectToDb } from './utils/db';
+
+//Connect to MongoDb Database
+(async () => {
+  // Code to execute
+  await connectToDb();
+})().catch((err) => {
+  console.error(err);
+});
 
 const server = express();
 
