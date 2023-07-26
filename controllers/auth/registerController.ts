@@ -56,7 +56,7 @@ const registerUser = async (
 
     //[+] store in database
 
-    const newUser: IUser = new UserModel(user);
+    const newUser: IUser = await UserModel.create(user);
 
     console.log('new user created', JSON.stringify(newUser, null, 3));
 
