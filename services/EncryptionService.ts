@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 
-class Encryption {
+class EncryptionService {
   /**
    * The function compares a hashed token with a provided token and returns a boolean indicating
    * whether they match.
@@ -12,11 +12,8 @@ class Encryption {
    * they match.
    * @returns a Promise that resolves to a boolean value.
    */
-  static async isMatch(
-    hashedToken: string,
-    providedToken: string
-  ): Promise<boolean> {
-    const match = await bcrypt.compare(hashedToken, providedToken);
+  static async isMatch(data: string, encrypted: string): Promise<boolean> {
+    const match = await bcrypt.compare(data, encrypted);
 
     return match;
   }
@@ -41,4 +38,4 @@ class Encryption {
   }
 }
 
-export default Encryption;
+export default EncryptionService;

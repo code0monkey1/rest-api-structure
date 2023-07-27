@@ -24,7 +24,7 @@ class CustomErrorHandler extends Error {
    * @returns A new instance of the CustomErrorHandler class with a status code of 401 and a message of
    * "password or email invalid".
    */
-  static userAuthFailed(message = 'password or email invalid') {
+  static userAuthFailed(message = 'missing or invalid jwt') {
     /* The line `return new CustomErrorHandler(401, message);` is creating a new instance of the
   `CustomErrorHandler` class with a status code of 401 and the provided error message. This instance
   is then returned by the `wrongUserCredentials` static method. */
@@ -40,8 +40,12 @@ class CustomErrorHandler extends Error {
    * @returns a new instance of the CustomErrorHandler class with a status code of 401 and a message of
    * "password or email invalid".
    */
-  static wrongUserCredentials(message = 'password or email invalid') {
+  static wrongCredentials(message = 'password or email invalid') {
     return new CustomErrorHandler(401, message);
+  }
+
+  static notFound(message = 'Not Found') {
+    return new CustomErrorHandler(404, message);
   }
 }
 

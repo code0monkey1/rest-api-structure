@@ -1,17 +1,16 @@
-import bcrypt from 'bcrypt';
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { UserModel } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
+import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';
-import { RegisterUserRequest } from '../../types';
+import { RegisterUserRequest } from '../../src/types';
 import { loginSchema } from '../../validation';
 
 type LoginResponse = { access_token: string };
 
 const loginUser = async (
   req: Request<RegisterUserRequest>,
-  res: Response<LoginResponse>,
-  next: NextFunction
+  res: Response<LoginResponse>
 ) => {
   //[+] validate login user schema
 
@@ -28,15 +27,15 @@ const loginUser = async (
   console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
 
   if (!user) {
-    return next(CustomErrorHandler.wrongUserCredentials());
+    throw CustomErrorHandler.wrongCredentials();
   }
 
   //[+] verify if password matches
 
-  const match = await bcrypt.compare(password, user.password);
+  const match = await EncryptionService.isMatch(password, user.password);
 
   if (!match) {
-    return next(CustomErrorHandler.userAuthFailed());
+    throw CustomErrorHandler.wrongCredentials();
   }
 
   // [+] sign jwt
@@ -46,7 +45,7 @@ const loginUser = async (
     _id: user._id,
     role: user.role,
   });
-
+  // [+] send jwt to frontend
   res.json({
     access_token,
   });
