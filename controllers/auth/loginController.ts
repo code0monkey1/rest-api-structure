@@ -13,7 +13,7 @@ const loginUser = async (
   res: Response<LoginResponse>,
   next: NextFunction
 ) => {
-  //[+] validate login user schema¯
+  //[+] validate login user schema
 
   const { email, password } = loginSchema.parse(req.body);
 
