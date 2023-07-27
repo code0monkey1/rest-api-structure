@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { UserModel } from '../../models';
+import { REFRESH_TOKEN_SECRET } from '../../config';
+import { RefreshTokenModel, UserModel } from '../../models';
 import { IUser } from '../../models/UserModel';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
@@ -32,9 +33,8 @@ const registerUser = async (
    database. */
   const userExists = await UserModel.exists({ email });
 
-  if (userExists) {
+  if (userExists)
     throw CustomErrorHandler.alreadyExists('This email is already taken');
-  }
 
   //[+] prepare model
 
@@ -64,9 +64,23 @@ const registerUser = async (
     role: newUser.role,
   });
 
+  //[+] create refresh token
+  const refresh_token = await JwtService.sign(
+    {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      _id: newUser._id,
+      role: newUser.role,
+    },
+    '1y',
+    REFRESH_TOKEN_SECRET
+  );
+
+  //[+] save refresh token to db
+  await RefreshTokenModel.create({ token: refresh_token });
+
   // [+] send response
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  res.send({ message: 'valid', access_token });
+  res.send({ message: 'valid', access_token, refresh_token });
 };
 
 export default {

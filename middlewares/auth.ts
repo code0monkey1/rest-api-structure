@@ -16,12 +16,11 @@ export interface CustomRequest extends Request {
   };
 }
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
+const auth = (req: Request, _res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader) {
-    return next(CustomErrorHandler.userAuthFailed('J.W.T Missing'));
-  }
+  if (!authHeader)
+    throw CustomErrorHandler.userAuthFailed('Authorization Header Missing');
 
   const token = authHeader.split(' ')[1];
 
@@ -37,11 +36,11 @@ const auth = (req: Request, res: Response, next: NextFunction) => {
     };
 
     (req as CustomRequest).user = userInfo;
-
-    next();
   } catch (e) {
-    return next(CustomErrorHandler.userAuthFailed('J.W.T Invalid'));
+    throw CustomErrorHandler.userAuthFailed('J.W.T Invalid');
   }
+
+  next();
 };
 
 export default auth;
