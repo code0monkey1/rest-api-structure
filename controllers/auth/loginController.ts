@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
-import { UserModel } from '../../models';
+import { REFRESH_TOKEN_SECRET } from '../../config';
+import { RefreshTokenModel, UserModel } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';
-import { RegisterUserRequest } from '../../src/types';
+import { LoginResponse, RegisterUserRequest } from '../../src/types';
 import { loginSchema } from '../../validation';
-
-type LoginResponse = { access_token: string };
 
 const loginUser = async (
   req: Request<RegisterUserRequest>,
@@ -50,8 +49,8 @@ const loginUser = async (
   const refresh_token = await JwtService.sign(
     {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      _id: newUser._id,
-      role: newUser.role,
+      _id: user._id,
+      role: user.role,
     },
     '1y',
     REFRESH_TOKEN_SECRET
@@ -63,6 +62,7 @@ const loginUser = async (
   // [+] send jwt to frontend
   res.json({
     access_token,
+    refresh_token,
   });
 };
 
