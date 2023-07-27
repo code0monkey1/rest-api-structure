@@ -45,6 +45,21 @@ const loginUser = async (
     _id: user._id,
     role: user.role,
   });
+
+  //[+] create refresh token
+  const refresh_token = await JwtService.sign(
+    {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      _id: newUser._id,
+      role: newUser.role,
+    },
+    '1y',
+    REFRESH_TOKEN_SECRET
+  );
+
+  //[+] save refresh token to db
+  await RefreshTokenModel.create({ token: refresh_token });
+
   // [+] send jwt to frontend
   res.json({
     access_token,
