@@ -30,6 +30,9 @@ class Encryption {
    */
 
   static async getHashedToken(token: string): Promise<string> {
+    if (typeof token !== 'string') {
+      throw new Error();
+    }
     const SALT_ROUNDS = 10;
 
     const hashedToken = await bcrypt.hash(token, SALT_ROUNDS);
