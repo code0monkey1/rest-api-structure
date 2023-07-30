@@ -1,10 +1,11 @@
 export function greeter() {
-  return {
-    helloWorld: function () {
-      return 'Hello World!';
+
+   return {
+    helloWorld: function(){
+      return "Hello World!";
     },
-    helloPerson: function (name: string) {
-      return `Hello ${name}!`;
-    },
-  };
+    helloPerson: function(name: string){
+       return `Hello ${name}!`;
+    }
+   }
 }
