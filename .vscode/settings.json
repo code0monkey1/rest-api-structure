@@ -1,4 +1,5 @@
 {
   "editor.acceptSuggestionOnEnter": "on",
-  "gitdoc.enabled": true
+  "gitdoc.enabled": true,
+  "git.ignoreLimitWarning": true
 }
