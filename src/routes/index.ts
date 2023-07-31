@@ -4,8 +4,8 @@ import {
   loginController,
   registerController,
   userController,
-} from '../../controllers';
-import auth from '../../middlewares/auth';
+} from '../controllers';
+import auth from '../middlewares/auth';
 
 const router = express.Router();
 
