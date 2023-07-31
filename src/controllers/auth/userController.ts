@@ -4,9 +4,12 @@ import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
 
 const me = async (req: Request, res: Response): Promise<void> => {
+  //[+] Ensure that user Auth Info is present in the request object
+
   if (!hasUserAuth(req))
     throw CustomErrorHandler.userAuthFailed('user not attached');
 
+  //[+] Retrieve given user info
   const EXCLUDED_FIELDS = '-password -updatedAt -createdAt -__v';
   /*  The `select` method is used to
     specify which fields should be included or excluded from the result. In this case, the
@@ -16,8 +19,10 @@ const me = async (req: Request, res: Response): Promise<void> => {
   );
 
   console.log('🚀 ~ file: userController.ts:15 ~ foundUser:', foundUser);
-
+  //[+] Ensure user if found
   if (!foundUser) throw CustomErrorHandler.notFound('User Not Found');
+
+  //[+] Return user information
 
   res.json(foundUser);
 };

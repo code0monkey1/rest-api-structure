@@ -1,0 +1,6 @@
+jest.config.js
+test
+node_modules
+coverage
+build
+.vscode
