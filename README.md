@@ -15,9 +15,11 @@
    ```
 
 1. ```bash
-    npm i -D typescript
-   ```
-1. ```bash
     npm i dotenv
+
+   ```
+
+1. ```bash
+    npm i -D jest typescript @types/jest ts-jest
 
    ```
