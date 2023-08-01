@@ -12,9 +12,6 @@ const registerUser = async (
   res: Response<RegisterUserResponse>
 ) => {
   //Checklist
-
-  //[-] authorize the request
-
   const body: unknown = await req.body;
 
   // [+] validate the request
