@@ -3,6 +3,6 @@
 <details>
    
 <summary> Setup </summary>
-> Step 1. npm init -y
+<code>npm init -y</code> 
          
  </details>
