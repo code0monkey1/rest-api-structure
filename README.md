@@ -1,10 +1,23 @@
 # REST API for E-Commerce Application using Typescript
 
-<details>
-   
-<summary> Setup </summary>
-1. <code>npm init -y</code> 
-<br/>
-1. <code>npm i express</code> 
-         
- </details>
+## Setup
+
+1. ```bash
+    npm init -y
+   ```
+
+1. ```bash
+    npm i express
+   ```
+
+1. ```bash
+    npm i -D ts-node-dev
+   ```
+
+1. ```bash
+    npm i -D typescript
+   ```
+1. ```bash
+    npm i dotenv
+
+   ```
