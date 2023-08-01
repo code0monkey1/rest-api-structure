@@ -2,5 +2,7 @@
 
 ## Setup:
 
-1. `npm init -y`
+1. ```bash
+   npm init -y
+   ```
 1.
