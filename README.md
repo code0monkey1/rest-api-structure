@@ -23,3 +23,8 @@
     npm i -D jest typescript @types/jest ts-jest
 
    ```
+
+1. ```bash
+    npx ts-jest config:init
+
+   ```
