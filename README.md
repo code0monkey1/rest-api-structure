@@ -3,6 +3,8 @@
 <details>
    
 <summary> Setup </summary>
-<code>npm init -y</code> 
+1. <code>npm init -y</code> 
+<br/>
+1. <code>npm i express</code> 
          
  </details>
