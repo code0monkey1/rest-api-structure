@@ -4,7 +4,7 @@ import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
 
 const me = async (req: Request, res: Response): Promise<void> => {
-  //[+] Ensure that user Auth Info is present in the request object
+  //[+] Ensure that user Auth Info is present in the request object ,using a Type Guard
 
   if (!hasUserAuth(req))
     throw CustomErrorHandler.userAuthFailed('user not attached');
@@ -21,7 +21,7 @@ const me = async (req: Request, res: Response): Promise<void> => {
   );
 
   console.log('🚀 ~ file: userController.ts:15 ~ foundUser:', foundUser);
-  //[+] Ensure user is found
+  //[+] If user not found - throw appropriate error
   if (!foundUser) throw CustomErrorHandler.notFound('User Not Found');
 
   //[+] Return user information

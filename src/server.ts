@@ -7,9 +7,9 @@ import { APP_PORT } from './config';
 
 import express from 'express';
 
+import { connectToDb } from './db';
 import errorHandler from './middlewares/errorHandler';
 import routes from './routes';
-import { connectToDb } from './utils/db';
 
 //Connect to MongoDb Database
 (async () => {
