@@ -47,6 +47,10 @@ class CustomErrorHandler extends Error {
   static notFound(message = 'Not Found') {
     return new CustomErrorHandler(404, message);
   }
+
+  static unAuthorized(message = 'auth failed') {
+    return new CustomErrorHandler(401, message);
+  }
 }
 
 export default CustomErrorHandler;

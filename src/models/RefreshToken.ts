@@ -10,7 +10,7 @@ export interface IRefreshToken extends Document {
 // Declare the Schema of the Mongo model
 const refreshTokenSchema = new Schema<IRefreshToken>(
   {
-    /* It's important to make the token unique, as that will provide us with a token id , which will help us in finding and deleting it from the DB later */
+    /* It's important to make the token unique, as that will help in indexing it , which will help us in finding and deleting it *EXTREMELY FAST* from the DB later */
     token: {
       type: String,
       unique: true,

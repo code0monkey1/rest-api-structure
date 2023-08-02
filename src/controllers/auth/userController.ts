@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UserModel } from '../../models';
+import { User } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
 
@@ -16,9 +16,7 @@ const me = async (req: Request, res: Response): Promise<void> => {
     specify which fields should be included or excluded from the result. In this case, the
     `-password -updatedAt -createdAt -__v` fields are excluded from the result. */
 
-  const foundUser = await UserModel.findById(req.user._id).select(
-    EXCLUDED_FIELDS
-  );
+  const foundUser = await User.findById(req.user._id).select(EXCLUDED_FIELDS);
 
   console.log('🚀 ~ file: userController.ts:15 ~ foundUser:', foundUser);
   //[+] If user not found - throw appropriate error

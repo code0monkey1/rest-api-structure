@@ -1,2 +1,2 @@
-export { default as RefreshTokenModel } from './RefreshTokenModel';
-export { default as UserModel } from './UserModel';
+export { default as RefreshToken } from './RefreshToken';
+export { default as User } from './User';

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { REFRESH_TOKEN_SECRET } from '../../config';
-import { RefreshTokenModel, UserModel } from '../../models';
-import { IUser } from '../../models/UserModel';
+import { RefreshToken, User } from '../../models';
+import { IUser } from '../../models/User';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';
@@ -28,7 +28,7 @@ const registerUser = async (
    perform the check. The `exists` method takes a query object as an argument, in this case `{ email
    }`, and returns a boolean value indicating whether a document matching the query exists in the
    database. */
-  const userExists = await UserModel.exists({ email });
+  const userExists = await User.exists({ email });
 
   if (userExists)
     throw CustomErrorHandler.alreadyExists('This email is already taken');
@@ -48,7 +48,7 @@ const registerUser = async (
 
   //[+] store in database
 
-  const newUser: IUser = await UserModel.create(user);
+  const newUser: IUser = await User.create(user);
 
   console.log('new user created', JSON.stringify(newUser, null, 3));
 
@@ -73,11 +73,11 @@ const registerUser = async (
   );
 
   //[+] save refresh token to db
-  await RefreshTokenModel.create({ token: refresh_token });
+  await RefreshToken.create({ token: refresh_token });
 
   // [+] send response
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  res.send({ message: 'valid', access_token, refresh_token });
+  res.send({ access_token, refresh_token });
 };
 
 export default {

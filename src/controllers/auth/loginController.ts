@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { REFRESH_TOKEN_SECRET } from '../../config';
-import { RefreshTokenModel, UserModel } from '../../models';
+import { RefreshToken, User } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';
@@ -21,7 +21,7 @@ const loginUser = async (
     password
   );
 
-  const user = await UserModel.findOne({ email });
+  const user = await User.findOne({ email });
 
   console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
 
@@ -57,7 +57,7 @@ const loginUser = async (
   );
 
   //[+] save refresh token to db
-  await RefreshTokenModel.create({ token: refresh_token });
+  await RefreshToken.create({ token: refresh_token });
 
   // [+] send jwt to frontend
   res.json({

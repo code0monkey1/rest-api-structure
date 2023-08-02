@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { JWT_SECRET } from '../config';
 import CustomErrorHandler from '../services/CustomErrorHandler';
 import JwtService from '../services/JwtService';
 // import JwtService from '../services/JwtService';
@@ -23,30 +24,41 @@ const auth = (req: Request, _res: Response, next: NextFunction) => {
 
   if (!authHeader)
     throw CustomErrorHandler.userAuthFailed('Authorization Header Missing');
+
   //[+] extract the token
+
   const token = authHeader.split(' ')[1];
 
+  //[+] if no token , raise exception
+
+  if (!token) throw CustomErrorHandler.userAuthFailed('auth token not found');
+
+  //[+] attach token to request object
+  const userInfo = destructureToken(token);
+
+  (req as CustomRequest).user = userInfo;
+
+  next();
+};
+
+export function destructureToken(token: string, secret = JWT_SECRET) {
+  let userInfo;
+
   try {
-    //[+]  un-bundle the jwt and provides the info within it
+    const { _id, role } = JwtService.verify(token, secret);
 
-    //??( verification leads to un-bundling automatically )
-
-    const { _id, role } = JwtService.verify(token);
-
-    const userInfo = {
+    userInfo = {
       _id,
       role,
     };
     //[+] attach user info in token to  Request Object
     //?? ( carry out appropriate casting )
-    (req as CustomRequest).user = userInfo;
   } catch (e) {
     //!! Make sure you return auth failure , in case
-
     throw CustomErrorHandler.userAuthFailed('J.W.T Invalid');
   }
 
-  next();
-};
+  return userInfo;
+}
 
 export default auth;

@@ -1,6 +1,23 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
 import { DEBUG_MODE } from '../config';
+
+/**
+ * The `errorHandler` function handles errors and sends an appropriate response with a status code and
+ * error message.
+ * @param {Error} err - The `err` parameter is an instance of the `Error` class, which represents an
+ * error that occurred during the execution of code. It contains information about the error, such as
+ * the error message and stack trace.
+ * @param {Request} _req - The `_req` parameter represents the incoming HTTP request object. It
+ * contains information about the request, such as the request method, headers, URL, and body.
+ * @param {Response} res - The `res` parameter is an object representing the HTTP response that will be
+ * sent back to the client. It is used to send the response data, such as the JSON data and the HTTP
+ * status code.
+ * @param {NextFunction} _next - The `_next` parameter is a function that represents the next
+ * middleware function in the request-response cycle. It is used to pass control to the next middleware
+ * function.
+ */
+
 const errorHandler = (
   err: Error,
   _req: Request,
