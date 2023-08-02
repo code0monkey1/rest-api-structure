@@ -51,6 +51,10 @@ class CustomErrorHandler extends Error {
   static unAuthorized(message = 'auth failed') {
     return new CustomErrorHandler(401, message);
   }
+
+  static multerError(message = 'Multer File Upload Error') {
+    return new CustomErrorHandler(404, message);
+  }
 }
 
 export default CustomErrorHandler;
