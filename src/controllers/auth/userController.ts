@@ -1,7 +1,10 @@
 import { Request, Response } from 'express';
-import { User } from '../../models';
+import { RefreshToken, User } from '../../models';
+
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
+import { refreshTokenSchema } from '../../validation';
+import { IRefreshToken } from './refreshTokenController';
 
 const me = async (req: Request, res: Response): Promise<void> => {
   //[+] Ensure that user Auth Info is present in the request object ,using a Type Guard
@@ -27,6 +30,18 @@ const me = async (req: Request, res: Response): Promise<void> => {
   res.json(foundUser);
 };
 
+const logout = async (req: Request, res: Response) => {
+  const body: unknown = await req.body;
+
+  const data: IRefreshToken = refreshTokenSchema.parse(body);
+
+  //[+] Find Refresh Token in DB and delete
+  await RefreshToken.findOneAndDelete({ token: data.refresh_token });
+
+  res.status(204).end();
+};
+
 export default {
   me,
+  logout,
 };

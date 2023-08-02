@@ -6,7 +6,7 @@ import CustomErrorHandler from '../../services/CustomErrorHandler';
 import JwtService from '../../services/JwtService';
 import { refreshTokenSchema } from '../../validation';
 
-interface IRefreshToken {
+export interface IRefreshToken {
   refresh_token: string;
 }
 
@@ -58,9 +58,13 @@ const refresh = async (req: Request<IRefreshToken>, res: Response) => {
   );
 
   //[+] save refresh token to db
+
   await RefreshToken.create({ token: refresh_token });
 
+  //[-] ? ? What about the extra refresh tokens ( delete them ?? )
+
   // [+] send response
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   res.send({ message: 'valid', access_token, refresh_token });
 };

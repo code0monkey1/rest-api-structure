@@ -25,17 +25,13 @@ const loginUser = async (
 
   console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
 
-  if (!user) {
-    throw CustomErrorHandler.wrongCredentials();
-  }
+  if (!user) throw CustomErrorHandler.wrongCredentials();
 
   //[+] verify if password matches
 
   const match = await EncryptionService.isMatch(password, user.password);
 
-  if (!match) {
-    throw CustomErrorHandler.wrongCredentials();
-  }
+  if (!match) throw CustomErrorHandler.wrongCredentials();
 
   // [+] sign jwt
 

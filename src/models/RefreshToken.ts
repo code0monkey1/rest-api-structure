@@ -3,7 +3,7 @@
 import { Document, Schema, model } from 'mongoose';
 
 // Define the interface for the User document
-export interface IRefreshToken extends Document {
+interface IRefreshToken extends Document {
   token: string;
 }
 
