@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { REFRESH_TOKEN_SECRET } from '../../config';
 import { RefreshToken, User } from '../../models';
-import { IUser } from '../../models/User';
+import { IUser } from '../../models/UserModel';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';

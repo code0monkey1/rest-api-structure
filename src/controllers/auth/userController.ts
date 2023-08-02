@@ -6,6 +6,16 @@ import { hasUserAuth } from '../../types';
 import { refreshTokenSchema } from '../../validation';
 import { IRefreshToken } from './refreshTokenController';
 
+/**
+ * This TypeScript function retrieves user information from the request object, removes unnecessary
+ * fields, and returns the user information in a JSON response.
+ * @param {Request} req - The `req` parameter is an object that represents the HTTP request made by the
+ * client. It contains information such as the request headers, request body, request method, and
+ * request URL.
+ * @param {Response} res - The `res` parameter is the response object that is used to send the response
+ * back to the client. It contains methods and properties that allow you to manipulate the response,
+ * such as `json()` which is used to send a JSON response.
+ */
 const me = async (req: Request, res: Response): Promise<void> => {
   //[+] Ensure that user Auth Info is present in the request object ,using a Type Guard
 

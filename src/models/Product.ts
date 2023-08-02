@@ -3,7 +3,7 @@
 import { Document, Schema, model } from 'mongoose';
 
 // Define the interface for the User document
-interface Product extends Document {
+interface IProduct extends Document {
   name: string;
   price: number;
   size: string;
@@ -11,7 +11,7 @@ interface Product extends Document {
 }
 
 // Declare the Schema of the Mongo model
-const productSchema = new Schema<Product>(
+const productSchema = new Schema<IProduct>(
   {
     /* It's important to make the token unique, as that will help in indexing it , which will help us in finding and deleting it *EXTREMELY FAST* from the DB later */
     name: {
@@ -37,4 +37,4 @@ const productSchema = new Schema<Product>(
 );
 
 // Export the model
-export default model<Product>('Product', productSchema);
+export default model<IProduct>('Product', productSchema);
