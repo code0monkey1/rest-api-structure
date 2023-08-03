@@ -28,17 +28,20 @@ const storage = multer.diskStorage({
     cb(null, uniqueName);
   },
 });
-// 5MB size
+
 const handleMultipartData = multer({
   storage,
-  limits: { fileSize: 1e6 * 5 },
+  limits: { fileSize: 1e6 * 5 }, // 5MB size
 }).single('image'); // field name on the frontend form should be : 'image'
 
 const create = async (req: Request, res: Response) => {
+  console.log('create function defined');
   handleMultipartData(req, res, async (err) => {
-    if (err) {
-      throw CustomErrorHandler.multerError();
-    }
+    console.log('handleMultipartData function entered');
+
+    if (err) throw CustomErrorHandler.multerError();
+
+    //[ ]Validate the request and see if the form data is as expected
 
     const filePath = req.file?.path;
 
