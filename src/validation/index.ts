@@ -28,3 +28,9 @@ export const loginSchema = z.object({
 export const refreshTokenSchema = z.object({
   refresh_token: z.string(),
 });
+
+export const productSchema = z.object({
+  name: z.string(),
+  price: z.string(),
+  size: z.string(),
+});
