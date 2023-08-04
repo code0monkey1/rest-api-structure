@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
@@ -33,61 +33,57 @@ const handleMultipartData = multer({
 
 //[+] Function to create a new product
 
-const create = (req: Request, res: Response, next: NextFunction) => {
-  try {
-    // Multipart form data
+const create = (req: Request, res: Response) => {
+  // Multipart form data
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
-    handleMultipartData(req, res, async (err) => {
-      if (err) throw CustomErrorHandler.multerError((err as Error).message);
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  handleMultipartData(req, res, async (err) => {
+    if (err) throw CustomErrorHandler.multerError((err as Error).message);
 
-      const filePath = req?.file?.path;
-      console.log('filePath', filePath);
+    const filePath = req?.file?.path;
+    console.log('filePath', filePath);
 
-      //[+]validate the form data for product fileds
+    //[+]validate the form data for product fileds
 
-      const body: unknown = await req.body;
+    const body: unknown = await req.body;
 
-      let product;
+    let product;
 
-      try {
-        product = productValidator.parse(body);
-        //[+]Delete the uploaded file in case of validation error
-      } catch (err) {
-        fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
-          if (err) {
-            return res
-              .status(417)
-              .send(CustomErrorHandler.multerError('Could not delete file'));
-          } else {
-            console.log('Uploaded file deleted');
-          }
-        });
-        return next(err);
-      }
-
-      //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
-      //[+] Return error res in case error
-
-      //[+] Extract product fields from the body and create a Product document
-
-      const { name, price, size } = product; // product
-
-      const document = new Product({
-        name,
-        price,
-        size,
-        image: filePath,
+    try {
+      product = productValidator.parse(body);
+      //[+]Delete the uploaded file in case of validation error
+    } catch (err: unknown) {
+      fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
+        if (err) {
+          return res
+            .status(417)
+            .send(CustomErrorHandler.multerError('Could not delete file'));
+        } else {
+          console.log('Uploaded file deleted');
+        }
       });
+      throw new Error((err as Error).message);
+    }
 
-      const savedProduct = await document.save();
+    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
+    //[+] Return error res in case error
 
-      //[]
-      res.status(201).json(savedProduct);
+    //[+] Extract product fields from the body and create a Product document
+
+    const { name, price, size } = product; // product
+
+    const document = new Product({
+      name,
+      price,
+      size,
+      image: filePath,
     });
-  } catch (err) {
-    next(err);
-  }
+
+    const savedProduct = await document.save();
+
+    //[]
+    res.status(201).json(savedProduct);
+  });
 };
 
 const update = async (req: Request, res: Response) => {
