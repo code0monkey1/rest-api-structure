@@ -27,13 +27,18 @@ const registerUser = async (
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
 
-  //[+] save user to database
+  //[+]create user object
 
-  const user: IUser = await createUser({
+  const userInfo = {
+    username,
     email,
     password: hashedPassword,
-    username,
-  });
+    role: Role.ADMIN,
+  };
+
+  //[+] save user to database
+
+  const user: IUser = await User.create(userInfo);
 
   //[+] create access_token
 
@@ -61,23 +66,6 @@ const registerUser = async (
 
   res.send({ access_token, refresh_token });
 };
-
-async function createUser(userInfo: {
-  password: string;
-  username: string;
-  email: string;
-}) {
-  //[+]create user object
-
-  const user = {
-    ...userInfo,
-    role: Role.ADMIN,
-  };
-
-  const savedUser: IUser = await User.create(user);
-
-  return savedUser;
-}
 
 export default {
   registerUser,
