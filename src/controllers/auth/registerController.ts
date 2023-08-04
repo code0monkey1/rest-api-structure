@@ -23,9 +23,10 @@ const registerUser = async (
   if (userExists)
     throw CustomErrorHandler.alreadyExists('This email is already taken');
 
-  //[+] create new user
+  //[+] hash password to encrypt
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
+  //[+] create new user
 
   //[+] save user to database
 
