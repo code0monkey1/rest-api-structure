@@ -25,20 +25,12 @@ const registerUser = async (
 
   const { username, email, password } = validatedData;
 
-  /* The line `const userExists = await UserModel.exists({ email });` is checking if a user with the
-   given email already exists in the database. It uses the `exists` method of the `UserModel` to
-   perform the check. The `exists` method takes a query object as an argument, in this case `{ email
-   }`, and returns a boolean value indicating whether a document matching the query exists in the
-   database. */
   const userExists = await User.exists({ email });
 
   if (userExists)
     throw CustomErrorHandler.alreadyExists('This email is already taken');
 
   //[+] prepare model
-
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
 
