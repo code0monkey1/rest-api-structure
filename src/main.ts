@@ -1,8 +1,12 @@
 import express from 'express';
+require('express-async-errors');
+
+//rest
 import { APP_PORT } from './config';
 import errorHandler from './middlewares/errorHandler';
 import routes from './routes';
 import server from './server';
+
 //[+] Connect to db
 
 import { connectToDb } from './db';
