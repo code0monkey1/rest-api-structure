@@ -46,7 +46,7 @@ const registerUser = async (
 
   console.log('new user created', JSON.stringify(user, null, 3));
 
-  //[+] generate jwt
+  //[+] generate access_token jwt
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const access_token = await JwtService.sign({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -54,7 +54,7 @@ const registerUser = async (
     role: user.role,
   });
 
-  //[+] create refresh token
+  //[+] create refresh_token jwt
   const refresh_token = await createRefreshToken({
     id: user._id as string,
     role: user.role,
