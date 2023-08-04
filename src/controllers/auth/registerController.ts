@@ -5,7 +5,7 @@ import { IUser } from '../../models/UserModel';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';
-import { RegisterUserRequest, RegisterUserResponse, Role } from '../../types';
+import { RegisterUserRequest, RegisterUserResponse } from '../../types';
 import { registerSchema } from '../../validation';
 const registerUser = async (
   req: Request<RegisterUserRequest>,
@@ -45,7 +45,7 @@ const registerUser = async (
     username,
     email,
     password: hashedPassword,
-    role: Role.ADMIN,
+    // role: Role.ADMIN,
   };
 
   //[+] store in database
