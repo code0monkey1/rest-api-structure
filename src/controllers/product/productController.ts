@@ -45,6 +45,7 @@ const create = (req: Request, res: Response) => {
 
     //[+]validate the form data for product fileds
 
+    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
     const body: unknown = await req.body;
 
     let product;
@@ -62,10 +63,9 @@ const create = (req: Request, res: Response) => {
           console.log('Uploaded file deleted');
         }
       });
-      throw new Error((err as Error).message);
+      throw CustomErrorHandler.multerError((err as Error).message);
     }
 
-    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
     //[+] Return error res in case error
 
     //[+] Extract product fields from the body and create a Product document
