@@ -61,7 +61,7 @@ async function createUser(userInfo: {
     role: Role.ADMIN,
   };
 
-  //[+] store in database
+  //[+] save user to database
   const savedUser: IUser = await User.create(user);
 
   return savedUser;
