@@ -60,8 +60,9 @@ async function createUser(userInfo: {
   };
 
   //[+] store in database
-  const newUser: IUser = await User.create(user);
-  return newUser;
+  const savedUser: IUser = await User.create(user);
+
+  return savedUser;
 }
 
 async function createRefreshToken(user: { id: string; role: string }) {
