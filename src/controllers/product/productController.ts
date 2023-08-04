@@ -32,47 +32,54 @@ const handleMultipartData = multer({
 }).single('image'); // 5mb
 
 //[+] Function to create a new product
-const create = async (req: Request, res: Response) => {
+
+const create = (req: Request, res: Response) => {
   // Multipart form data
+  // eslint-disable-next-line
   handleMultipartData(req, res, async (err) => {
-    if (err) throw CustomErrorHandler.multerError(err.message);
+    if (err) throw CustomErrorHandler.multerError((err as Error).message);
 
     const filePath = req?.file?.path;
 
     //[+]validate the form data for product fileds
+
+    const body: unknown = await req.body;
+
     let product;
 
     try {
-      const body = await req.body;
-
       product = productValidator.parse(body);
-    } catch (error) {
+
       //[+]Delete the uploaded file in case of validation error
 
       fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
         if (err) {
-          throw CustomErrorHandler.multerError(
-            'could not delete uploaded file after error'
-          );
+          return res
+            .status(417)
+            .send(CustomErrorHandler.multerError('Could not delete file'));
+        } else {
+          console.log('Uploaded file deleted');
         }
       });
-
-      //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
-
-      //[+] Return error response in case error
-      return res.status(404).send({
-        error,
-      });
+    } catch (err) {
+      return res
+        .status(400)
+        .send('Product validation error : ' + JSON.stringify(product, null, 2));
     }
+
+    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
+    //[+] Return error response in case error
+
     //[+] Extract product fields from the body and create a Product document
     const { name, price, size } = product; // product
 
-    let document = await Product.create({
+    const document = await Product.create({
       name,
       price,
       size,
       image: filePath,
     });
+
     //[]
     res.status(201).json(document);
   });
@@ -93,8 +100,8 @@ const update = async (req: Request, res: Response) => {
   // [ ]3. If found use put to parse the request and update the product
 
   const updatedProduct = await Product.findOneAndUpdate(
-    { id },
-    { ...req.body }
+    { id }
+    // { ...req.body }
   );
 
   // [ ]4. Return the updated product to the frontend

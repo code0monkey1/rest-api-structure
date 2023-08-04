@@ -14,6 +14,8 @@ const registerUser = async (
   //Checklist
   const body: unknown = await req.body;
 
+  console.log('The register body is ', JSON.stringify(body));
+
   // [+] validate the request
   const validatedData: RegisterUserRequest = registerSchema.parse(body);
 

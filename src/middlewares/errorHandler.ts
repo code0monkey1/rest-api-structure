@@ -24,6 +24,8 @@ const errorHandler = (
   res: Response,
   _next: NextFunction
 ) => {
+  console.error('error handler reached!!!');
+
   let statusCode = 500;
 
   let data = {
@@ -45,6 +47,12 @@ const errorHandler = (
         .map((issue) => `${issue.path.join('.')} ${issue.message}`)
         .join(', '),
     };
+  }
+
+  if (err.name === 'ValidationError') {
+    console.error(' Mongoose ValidationError');
+
+    data = { message: err.message };
   }
 
   res.json(data).status(statusCode);

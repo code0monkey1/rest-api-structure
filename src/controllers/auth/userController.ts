@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { RefreshToken, User } from '../../models';
-
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
 import { refreshTokenValidator } from '../../validation';
@@ -40,6 +39,15 @@ const me = async (req: Request, res: Response): Promise<void> => {
   res.json(foundUser);
 };
 
+/**
+ * The `logout` function is an asynchronous function that handles the logout functionality by deleting
+ * the refresh token from the database and sending a 204 status code as a response.
+ * @param {Request} req - The `req` parameter is of type `Request`, which represents the HTTP request
+ * received by the server. It contains information such as the request headers, body, query parameters,
+ * etc.
+ * @param {Response} res - The `res` parameter is an instance of the `Response` object from the
+ * Express.js framework. It represents the HTTP response that will be sent back to the client.
+ */
 const logout = async (req: Request, res: Response) => {
   const body: unknown = await req.body;
 

@@ -7,9 +7,8 @@ const admin = async (req: Request, _res: Response, next: NextFunction) => {
 
   console.log(userInfo);
 
-  if (userInfo.role !== 'admin') {
+  if (userInfo.role !== 'admin')
     throw CustomErrorHandler.userAuthFailed('User Not Admin');
-  }
 
   next();
 };

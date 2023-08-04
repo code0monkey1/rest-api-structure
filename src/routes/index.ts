@@ -8,8 +8,7 @@ import {
   userController,
 } from '../controllers';
 
-import admin from '../middlewares/admin';
-import auth from '../middlewares/auth';
+import { admin, auth } from '../middlewares';
 
 const router = express.Router();
 
