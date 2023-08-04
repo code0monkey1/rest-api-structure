@@ -58,7 +58,7 @@ const create = (req: Request, res: Response) => {
         if (err) throw CustomErrorHandler.multerError('Could not delete file');
         else console.log('Uploaded file deleted');
       });
-      throw CustomErrorHandler.multerError((err as Error).message);
+      throw CustomErrorHandler.multerError('product validation error');
     }
 
     //[+] Return error res in case error
