@@ -52,15 +52,12 @@ const create = async (req: Request, res: Response) => {
 
     try {
       //[+] Extract product fields from the body and create a Product document
-      const { name, price, size, image } = await productValidator.parseAsync(
-        req.body
-      );
+      const { name, price, size } = await productValidator.parseAsync(req.body);
       console.log(
         '🚀 ~ file: productController.ts:56 ~ handleMultipartData ~ const { name, price, size }:',
         name,
         price,
-        size,
-        image
+        size
       );
 
       product = await Product.create({
