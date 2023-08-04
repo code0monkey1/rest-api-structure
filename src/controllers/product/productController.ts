@@ -46,15 +46,25 @@ const create = async (req: Request, res: Response) => {
 
     //[+]validate the form data for product fileds
 
-    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart forms
-    const body: unknown = await req.body;
+    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart form
 
     let product;
 
     try {
-      product = productValidator.parse(body);
+      //[+] Extract product fields from the body and create a Product document
+      const productBody = await productValidator.parseAsync(req.body);
+      const { name, price, size } = productBody; // product
+
+      product = await Product.create({
+        name,
+        price,
+        size,
+        image: filePath,
+      });
+
       //[+]Delete the uploaded file in case of validation error
     } catch (err: unknown) {
+      //[+] Return error res in case error
       fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
         if (err) throw CustomErrorHandler.multerError('Could not delete file');
         else console.log('Uploaded file deleted');
@@ -62,23 +72,7 @@ const create = async (req: Request, res: Response) => {
       throw CustomErrorHandler.multerError('product validation error');
     }
 
-    //[+] Return error res in case error
-
-    //[+] Extract product fields from the body and create a Product document
-
-    const { name, price, size } = product; // product
-
-    const document = new Product({
-      name,
-      price,
-      size,
-      image: filePath,
-    });
-
-    const savedProduct = await document.save();
-
-    //[]
-    res.status(201).json(savedProduct);
+    res.status(201).json(product);
   });
 };
 
