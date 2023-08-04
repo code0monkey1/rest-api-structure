@@ -39,39 +39,48 @@ const registerUser = async (
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+
   const hashedPassword = await EncryptionService.getHashedToken(password);
 
-  const user = {
-    username,
-    email,
-    password: hashedPassword,
-    role: Role.ADMIN,
-  };
+  const user: IUser = await createUser({ email, hashedPassword, username });
 
-  //[+] store in database
-
-  const newUser: IUser = await User.create(user);
-
-  console.log('new user created', JSON.stringify(newUser, null, 3));
+  console.log('new user created', JSON.stringify(user, null, 3));
 
   //[+] generate jwt
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const access_token = await JwtService.sign({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    _id: newUser._id,
-    role: newUser.role,
+    _id: user._id,
+    role: user.role,
   });
 
   //[+] create refresh token
   const refresh_token = await createRefreshToken({
-    id: newUser._id as string,
-    role: newUser.role,
+    id: user._id as string,
+    role: user.role,
   });
 
   // [+] send response
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   res.send({ access_token, refresh_token });
 };
+
+async function createUser(userInfo: {
+  hashedPassword: string;
+  username: string;
+  email: string;
+}) {
+  const user = {
+    username: userInfo.username,
+    email: userInfo.email,
+    password: userInfo.hashedPassword,
+    role: Role.ADMIN,
+  };
+
+  //[+] store in database
+  const newUser: IUser = await User.create(user);
+  return newUser;
+}
 
 async function createRefreshToken(user: { id: string; role: string }) {
   const refresh_token = await JwtService.sign(
