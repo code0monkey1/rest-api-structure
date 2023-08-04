@@ -26,7 +26,9 @@ const registerUser = async (
   //[+] create new user
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
+
   //[+] save user to database
+
   const user: IUser = await createUser({
     email,
     password: hashedPassword,
