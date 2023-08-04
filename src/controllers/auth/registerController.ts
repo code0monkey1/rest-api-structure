@@ -11,11 +11,10 @@ const registerUser = async (
   req: Request<RegisterUserRequest>,
   res: Response<RegisterUserResponse>
 ) => {
-  //Checklist
-  const body: unknown = await req.body;
-
-  // [+] validate the request
-  const { username, email, password } = registerSchema.parse(body);
+  // [+] validate the request and extract info
+  const { username, email, password } = await registerSchema.parseAsync(
+    req.body
+  );
 
   //[+] check if user is in database already
 
