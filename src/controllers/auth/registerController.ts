@@ -42,12 +42,13 @@ const registerUser = async (
 
   //[+] create refresh_token
 
-  //[+] save refresh token to db
-
   const refresh_token = await createRefreshToken({
     id: user._id as string,
     role: user.role,
   });
+
+  //[+] save refresh token to db
+  await RefreshToken.create({ token: refresh_token });
 
   // [+] send response
 
@@ -80,7 +81,6 @@ async function createRefreshToken(user: { id: string; role: string }) {
     REFRESH_TOKEN_SECRET
   );
 
-  await RefreshToken.create({ token: refresh_token });
   return refresh_token;
 }
 
