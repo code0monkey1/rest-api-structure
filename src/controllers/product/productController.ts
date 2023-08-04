@@ -62,7 +62,7 @@ const create = async (req: Request, res: Response) => {
       });
 
       //[+]Delete the uploaded file in case of validation error
-    } catch (err: unknown) {
+    } catch (err) {
       //[+] Return error res in case error
       fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
         if (err) throw CustomErrorHandler.multerError('Could not delete file');
