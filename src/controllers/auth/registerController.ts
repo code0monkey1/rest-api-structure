@@ -15,11 +15,9 @@ const registerUser = async (
   const body: unknown = await req.body;
 
   // [+] validate the request
-  const validatedData: RegisterUserRequest = registerSchema.parse(body);
+  const { username, email, password } = registerSchema.parse(body);
 
   //[+] check if user is in database already
-
-  const { username, email, password } = validatedData;
 
   const userExists = await User.exists({ email });
 
