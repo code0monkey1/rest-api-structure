@@ -31,3 +31,8 @@ export function hasUserAuth(req: Request): req is CustomRequest {
     (req as CustomRequest).user.role !== undefined
   );
 }
+
+export const enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}

@@ -4,7 +4,7 @@ import { destructureToken } from '../../middlewares/auth';
 import { RefreshToken, User } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import JwtService from '../../services/JwtService';
-import { refreshTokenSchema } from '../../validation';
+import { refreshTokenValidator } from '../../validation';
 
 export interface IRefreshToken {
   refresh_token: string;
@@ -15,7 +15,7 @@ const refresh = async (req: Request<IRefreshToken>, res: Response) => {
 
   const body: unknown = await req.body;
 
-  const data: IRefreshToken = refreshTokenSchema.parse(body);
+  const data: IRefreshToken = refreshTokenValidator.parse(body);
 
   //[+] Find Refresh Token in DB
 

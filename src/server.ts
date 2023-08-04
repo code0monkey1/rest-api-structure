@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
-import 'express-async-errors';
-dotenv.config();
-
-import { APP_PORT } from './config';
-
 import express from 'express';
+import 'express-async-errors';
+import { APP_PORT } from './config';
 import { connectToDb } from './db';
 import errorHandler from './middlewares/errorHandler';
 import routes from './routes';
+dotenv.config();
+
+// To parse multipart data, you need to apply this middleware
 
 //Connect to MongoDb Database
 (async () => {
@@ -18,6 +18,11 @@ import routes from './routes';
 });
 
 const server = express();
+
+//[+] Middleware to parse multipart forms
+/* `server.use(express.urlencoded({ extended: false }));` is adding the middleware to parse URL-encoded
+data to the Express server. */
+server.use(express.urlencoded({ extended: false }));
 
 server.use(express.json());
 

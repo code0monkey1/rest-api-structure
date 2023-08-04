@@ -20,17 +20,22 @@ export const registerSchema = z
 
 registerSchema.refine((obj) => obj.password != obj.repeat_password);
 
-export const loginSchema = z.object({
+export const loginValidator = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
 
-export const refreshTokenSchema = z.object({
+export const refreshTokenValidator = z.object({
   refresh_token: z.string(),
 });
 
-export const productSchema = z.object({
+export const productValidator = z.object({
   name: z.string(),
   price: z.string(),
   size: z.string(),
 });
+
+export default {
+  productValidator,
+  refreshTokenValidator,
+};

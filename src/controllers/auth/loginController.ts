@@ -5,7 +5,7 @@ import CustomErrorHandler from '../../services/CustomErrorHandler';
 import EncryptionService from '../../services/EncryptionService';
 import JwtService from '../../services/JwtService';
 import { LoginResponse, RegisterUserRequest } from '../../types';
-import { loginSchema } from '../../validation';
+import { loginValidator } from '../../validation';
 
 const loginUser = async (
   req: Request<RegisterUserRequest>,
@@ -13,7 +13,7 @@ const loginUser = async (
 ) => {
   //[+] validate login user schema
 
-  const { email, password } = loginSchema.parse(req.body);
+  const { email, password } = loginValidator.parse(req.body);
 
   console.log(
     '🚀 ~ file: loginController.ts:20 ~  email, password :',

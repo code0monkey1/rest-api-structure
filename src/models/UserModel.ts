@@ -3,11 +3,15 @@
 import { Document, Schema, model } from 'mongoose';
 
 // Define the interface for the User document
+const enum Role {
+  ADMIN = 'admin',
+  USER = 'user',
+}
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
-  role: string;
+  role: Role;
 }
 
 // Declare the Schema of the Mongo model
@@ -29,7 +33,8 @@ const userSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      default: 'customer',
+      enum: [Role.ADMIN, Role.USER],
+      default: Role.USER,
     },
   },
   {

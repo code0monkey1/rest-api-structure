@@ -8,6 +8,7 @@ import {
   userController,
 } from '../controllers';
 
+import admin from '../middlewares/admin';
 import auth from '../middlewares/auth';
 
 const router = express.Router();
@@ -28,6 +29,7 @@ router.post('/logout', [auth], userController.logout);
 
 //products
 
-router.post('/product', productController.create);
+router.post('/products', [auth, admin], productController.create);
+router.put('/products/:id', productController.update);
 
 export default router;

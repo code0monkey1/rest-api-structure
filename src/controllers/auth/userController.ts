@@ -3,7 +3,7 @@ import { RefreshToken, User } from '../../models';
 
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
-import { refreshTokenSchema } from '../../validation';
+import { refreshTokenValidator } from '../../validation';
 import { IRefreshToken } from './refreshTokenController';
 
 /**
@@ -43,7 +43,7 @@ const me = async (req: Request, res: Response): Promise<void> => {
 const logout = async (req: Request, res: Response) => {
   const body: unknown = await req.body;
 
-  const data: IRefreshToken = refreshTokenSchema.parse(body);
+  const data: IRefreshToken = refreshTokenValidator.parse(body);
 
   //[+] Find Refresh Token in DB and delete
   await RefreshToken.findOneAndDelete({ token: data.refresh_token });
