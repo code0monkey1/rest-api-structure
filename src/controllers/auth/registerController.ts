@@ -27,7 +27,11 @@ const registerUser = async (
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
 
-  const user: IUser = await createUser({ email, hashedPassword, username });
+  const user: IUser = await createUser({
+    email,
+    password: hashedPassword,
+    username,
+  });
 
   //[+] create access_token
 
@@ -48,14 +52,12 @@ const registerUser = async (
 };
 
 async function createUser(userInfo: {
-  hashedPassword: string;
+  password: string;
   username: string;
   email: string;
 }) {
   const user = {
-    username: userInfo.username,
-    email: userInfo.email,
-    password: userInfo.hashedPassword,
+    ...userInfo,
     role: Role.ADMIN,
   };
 
