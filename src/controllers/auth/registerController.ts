@@ -26,7 +26,6 @@ const registerUser = async (
   //[+] hash password to encrypt
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
-  //[+] create new user
 
   //[+] save user to database
 
@@ -68,6 +67,8 @@ async function createUser(userInfo: {
   username: string;
   email: string;
 }) {
+  //[+]create user object
+
   const user = {
     ...userInfo,
     role: Role.ADMIN,
