@@ -33,7 +33,8 @@ const handleMultipartData = multer({
 
 //[+] Function to create a new product
 
-const create = (req: Request, res: Response) => {
+// eslint-disable-next-line @typescript-eslint/require-await
+const create = async (req: Request, res: Response) => {
   // Multipart form data
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
