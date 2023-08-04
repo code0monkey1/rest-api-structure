@@ -55,13 +55,8 @@ const create = (req: Request, res: Response) => {
       //[+]Delete the uploaded file in case of validation error
     } catch (err: unknown) {
       fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
-        if (err) {
-          return res
-            .status(417)
-            .send(CustomErrorHandler.multerError('Could not delete file'));
-        } else {
-          console.log('Uploaded file deleted');
-        }
+        if (err) throw CustomErrorHandler.multerError('Could not delete file');
+        else console.log('Uploaded file deleted');
       });
       throw CustomErrorHandler.multerError((err as Error).message);
     }
