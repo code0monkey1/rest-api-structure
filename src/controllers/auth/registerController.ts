@@ -42,10 +42,15 @@ const registerUser = async (
 
   //[+] create refresh_token
 
-  const refresh_token = await createRefreshToken({
-    id: user._id as string,
-    role: user.role,
-  });
+  const refresh_token = await JwtService.sign(
+    {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      _id: user.id,
+      role: user.role,
+    },
+    '1y',
+    REFRESH_TOKEN_SECRET
+  );
 
   //[+] save refresh token to db
   await RefreshToken.create({ token: refresh_token });
@@ -68,20 +73,6 @@ async function createUser(userInfo: {
   const savedUser: IUser = await User.create(user);
 
   return savedUser;
-}
-
-async function createRefreshToken(user: { id: string; role: string }) {
-  const refresh_token = await JwtService.sign(
-    {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      _id: user.id,
-      role: user.role,
-    },
-    '1y',
-    REFRESH_TOKEN_SECRET
-  );
-
-  return refresh_token;
 }
 
 export default {
