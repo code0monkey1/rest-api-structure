@@ -14,12 +14,8 @@ const registerUser = async (
   //Checklist
   const body: unknown = await req.body;
 
-  console.log('The register body is ', JSON.stringify(body));
-
   // [+] validate the request
   const validatedData: RegisterUserRequest = registerSchema.parse(body);
-
-  console.log('body', validatedData);
 
   //[+] check if user is in database already
 
@@ -36,13 +32,10 @@ const registerUser = async (
 
   const user: IUser = await createUser({ email, hashedPassword, username });
 
-  console.log('new user created', JSON.stringify(user, null, 3));
-
   //[+] generate access_token jwt
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   const access_token = await JwtService.sign({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    _id: user._id,
+    _id: user._id as string,
     role: user.role,
   });
 
@@ -53,7 +46,7 @@ const registerUser = async (
   });
 
   // [+] send response
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
   res.send({ access_token, refresh_token });
 };
 
