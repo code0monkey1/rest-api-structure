@@ -51,8 +51,10 @@ const create = async (req: Request, res: Response) => {
     let product;
 
     try {
+      const body: unknown = await req.body;
+      console.log('product body', JSON.stringify(body, null, 2));
       //[+] Extract product fields from the body and create a Product document
-      const { name, price, size } = await productValidator.parseAsync(req.body);
+      const { name, price, size } = productValidator.parse(body);
       console.log(
         '🚀 ~ file: productController.ts:56 ~ handleMultipartData ~ const { name, price, size }:',
         name,
