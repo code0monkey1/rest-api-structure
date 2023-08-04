@@ -23,7 +23,7 @@ const registerUser = async (
   if (userExists)
     throw CustomErrorHandler.alreadyExists('This email is already taken');
 
-  //[+] create new user from UserModel schema
+  //[+] create new user
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
 
