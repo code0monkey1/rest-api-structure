@@ -59,7 +59,7 @@ const registerUser = async (
     REFRESH_TOKEN_SECRET
   );
 
-  //[+] save refresh token to db
+  //[+] save refresh_token to db
   await RefreshToken.create({ token: refresh_token });
 
   // [+] send response
