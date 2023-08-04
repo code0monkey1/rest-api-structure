@@ -64,8 +64,8 @@ const registerUser = async (
 
   //[+] create refresh token
   const refresh_token = await createRefreshToken({
-    userId: newUser._id as string,
-    userRole: newUser.role,
+    id: newUser._id as string,
+    role: newUser.role,
   });
 
   // [+] send response
@@ -73,12 +73,12 @@ const registerUser = async (
   res.send({ access_token, refresh_token });
 };
 
-async function createRefreshToken(obj: { userId: string; userRole: string }) {
+async function createRefreshToken(user: { id: string; role: string }) {
   const refresh_token = await JwtService.sign(
     {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      _id: obj.userId,
-      role: obj.userRole,
+      _id: user.id,
+      role: user.role,
     },
     '1y',
     REFRESH_TOKEN_SECRET
