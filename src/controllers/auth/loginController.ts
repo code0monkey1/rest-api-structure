@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { REFRESH_TOKEN_SECRET } from '../../config';
 import { RefreshToken, User } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
@@ -9,57 +9,62 @@ import { loginValidator } from '../../validation';
 
 const loginUser = async (
   req: Request<RegisterUserRequest>,
-  res: Response<LoginResponse>
+  res: Response<LoginResponse>,
+  next: NextFunction
 ) => {
-  //[+] validate login user schema
+  try {
+    //[+] validate login user schema
 
-  const { email, password } = loginValidator.parse(req.body);
+    const { email, password } = loginValidator.parse(req.body);
 
-  console.log(
-    '🚀 ~ file: loginController.ts:20 ~  email, password :',
-    email,
-    password
-  );
+    console.log(
+      '🚀 ~ file: loginController.ts:20 ~  email, password :',
+      email,
+      password
+    );
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
+    console.log('🚀 ~ file: loginController.ts:22 ~ user:', user);
 
-  if (!user) throw CustomErrorHandler.wrongCredentials();
+    if (!user) throw CustomErrorHandler.wrongCredentials();
 
-  //[+] verify if password matches
+    //[+] verify if password matches
 
-  const match = await EncryptionService.isMatch(password, user.password);
+    const match = await EncryptionService.isMatch(password, user.password);
 
-  if (!match) throw CustomErrorHandler.wrongCredentials();
+    if (!match) throw CustomErrorHandler.wrongCredentials();
 
-  // [+] sign jwt
+    // [+] sign jwt
 
-  const access_token = await JwtService.sign({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    _id: user._id,
-    role: user.role,
-  });
-
-  //[+] create refresh token
-  const refresh_token = await JwtService.sign(
-    {
+    const access_token = await JwtService.sign({
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       _id: user._id,
       role: user.role,
-    },
-    '1y',
-    REFRESH_TOKEN_SECRET
-  );
+    });
 
-  //[+] save refresh token to db
-  await RefreshToken.create({ token: refresh_token });
+    //[+] create refresh token
+    const refresh_token = await JwtService.sign(
+      {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        _id: user._id,
+        role: user.role,
+      },
+      '1y',
+      REFRESH_TOKEN_SECRET
+    );
 
-  // [+] send jwt to frontend
-  res.json({
-    access_token,
-    refresh_token,
-  });
+    //[+] save refresh token to db
+    await RefreshToken.create({ token: refresh_token });
+
+    // [+] send jwt to frontend
+    res.json({
+      access_token,
+      refresh_token,
+    });
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default {

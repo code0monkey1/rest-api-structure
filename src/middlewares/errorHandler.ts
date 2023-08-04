@@ -19,23 +19,42 @@ import { DEBUG_MODE } from '../config';
  */
 
 const errorHandler = (
-  err: Error,
+  error: Error,
   _req: Request,
   res: Response,
   _next: NextFunction
 ) => {
-  console.error('error handler reached!!!');
-
   let statusCode = 500;
 
   let data = {
     message: 'Internal Server Error',
     /* The expression `...(DEBUG_MODE === 'true' && { originalError: err.message })` is using the
     spread syntax (`...`) to conditionally include an object in the `data` object. */
-    ...(DEBUG_MODE === 'true' && { originalError: err.message }),
+    ...(DEBUG_MODE === 'true' && { originalError: error.message }),
   };
 
-  if (err instanceof ZodError) {
+  console.error('---');
+  console.error(`error name: ${error?.name}`);
+  console.error(`errorHandler triggered: ${error.message}`);
+  console.error('---');
+
+  if (error.name === 'CastError')
+    return res.status(400).send({ success: false, message: error.message });
+
+  if (error.name === 'ValidationError')
+    return res.status(400).json({ success: false, message: error.message });
+  if (error.name === 'ReferenceError')
+    return res.status(400).json({ success: false, message: error.message });
+  if (error.name === 'JsonWebTokenError')
+    return res.status(401).json({ success: false, message: 'invalid jwt' });
+  if (error.name === 'MongoServerError')
+    return res.status(400).json({ success: false, message: error.message });
+  if (error.name === 'TypeError')
+    return res.status(400).json({ success: false, message: error.message });
+  if (error.name === 'TokenExpiredError')
+    return res.status(401).json({ success: false, message: 'jwt expired' });
+
+  if (error instanceof ZodError) {
     /* The line `statusCode = 422;` is assigning the value 422 to the variable `statusCode`. This
     variable is used to determine the HTTP status code that will be sent in the response. In this
     case, if the error is an instance of `ZodError`, the status code will be set to 422
@@ -43,19 +62,13 @@ const errorHandler = (
     statusCode = 422;
 
     data = {
-      message: err.issues
+      message: error.issues
         .map((issue) => `${issue.path.join('.')} ${issue.message}`)
         .join(', '),
     };
   }
 
-  if (err.name === 'ValidationError') {
-    console.error(' Mongoose ValidationError');
-
-    data = { message: err.message };
-  }
-
-  res.json(data).status(statusCode);
+  return res.json(data).status(statusCode);
 };
 
 export default errorHandler;
