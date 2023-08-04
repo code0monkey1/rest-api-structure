@@ -52,8 +52,7 @@ const create = async (req: Request, res: Response) => {
 
     try {
       //[+] Extract product fields from the body and create a Product document
-      const productBody = await productValidator.parseAsync(req.body);
-      const { name, price, size } = productBody; // product
+      const { name, price, size } = await productValidator.parseAsync(req.body);
 
       product = await Product.create({
         name,
