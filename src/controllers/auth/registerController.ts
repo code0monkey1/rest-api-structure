@@ -26,20 +26,20 @@ const registerUser = async (
   if (userExists)
     throw CustomErrorHandler.alreadyExists('This email is already taken');
 
-  //[+] prepare model
+  //[+] create new user from UserModel schema
 
   const hashedPassword = await EncryptionService.getHashedToken(password);
 
   const user: IUser = await createUser({ email, hashedPassword, username });
 
-  //[+] generate access_token jwt
+  //[+] create access_token
 
   const access_token = await JwtService.sign({
     _id: user._id as string,
     role: user.role,
   });
 
-  //[+] create refresh_token jwt
+  //[+] create refresh_token
   const refresh_token = await createRefreshToken({
     id: user._id as string,
     role: user.role,
