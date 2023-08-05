@@ -36,7 +36,7 @@ const handleMultipartData = multer({
 // eslint-disable-next-line @typescript-eslint/require-await
 const create = async (req: Request, res: Response) => {
   // Multipart form data
-
+  let product;
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   handleMultipartData(req, res, async (err) => {
     if (err) throw CustomErrorHandler.multerError((err as Error).message);
@@ -49,8 +49,6 @@ const create = async (req: Request, res: Response) => {
     //[+]validate the form data for product fileds
 
     //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart form
-
-    let product;
 
     try {
       const body: unknown = await req.body;
@@ -80,9 +78,9 @@ const create = async (req: Request, res: Response) => {
       });
       return res.send((err as Error).message);
     }
-
-    res.status(201).json(product);
   });
+
+  res.status(201).json(product);
 };
 
 const update = async (req: Request, res: Response) => {
