@@ -73,15 +73,13 @@ const errorHandler = (
         .join(', '),
     };
     res.status(statusCode).json(data);
-  } else {
-    if (error instanceof MulterError) {
-      // A Multer error occurred when uploading.
-      res.status(400).send('A Multer error occurred when uploading.');
-    } else {
-      // An unknown error occurred when uploading.
-      res.status(400).send('Something went wrong');
-    }
+  } else if (error instanceof MulterError) {
+    // A Multer error occurred when uploading.
+    statusCode = 422;
+    data = { message: 'Multer Error' + error.message };
   }
+  // An unknown error occurred when uploading.
+  return res.status(statusCode).json(data);
 };
 
 export default errorHandler;
