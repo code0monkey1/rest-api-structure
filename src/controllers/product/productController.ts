@@ -39,9 +39,10 @@ const create = async (req: Request, res: Response) => {
   let product;
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   handleMultipartData(req, res, async (err) => {
-    if (err) throw CustomErrorHandler.multerError('❌ Error at multer start');
+    if (err) return CustomErrorHandler.multerError('❌ Error at multer start');
 
-    if (!req.file) throw CustomErrorHandler.multerError('❌ File not received');
+    if (!req.file)
+      return CustomErrorHandler.multerError('❌ File not received');
 
     const filePath = req.file.path;
     console.log('filePath', filePath);
@@ -73,14 +74,14 @@ const create = async (req: Request, res: Response) => {
     } catch (err) {
       //[+] Return error res in case error
       fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
-        if (err) throw CustomErrorHandler.multerError('Could not delete file');
+        if (err) return CustomErrorHandler.multerError('Could not delete file');
         else console.log('✅ Uploaded file deleted');
       });
       return res.status(401).json(err);
     }
   });
 
-  res.status(201).json(product);
+  return res.status(201).json(product);
 };
 
 const update = async (req: Request, res: Response) => {
