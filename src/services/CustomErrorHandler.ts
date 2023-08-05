@@ -53,7 +53,7 @@ class CustomErrorHandler extends Error {
   }
 
   static multerError(message = 'Multer File Upload Error') {
-    return new CustomErrorHandler(404, message);
+    return new CustomErrorHandler(401, message);
   }
 }
 
