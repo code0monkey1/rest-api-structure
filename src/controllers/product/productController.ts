@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 
 import fs from 'fs';
-import multer, { MulterError } from 'multer';
+import multer from 'multer';
 import path from 'path';
 import { APP_ROOT } from '../../config';
 import { Product } from '../../models';
@@ -34,7 +34,7 @@ const handleMultipartData = multer({
 //[+] Function to create a new product
 
 // eslint-disable-next-line @typescript-eslint/require-await
-const create = async (req: Request, res: Response) => {
+const create = async (req: Request, res: Response, next: NextFunction) => {
   // Multipart form data
 
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -90,12 +90,7 @@ const create = async (req: Request, res: Response) => {
 
       return res.status(201).json(product);
     } catch (err) {
-      let message = 'MulterError :';
-      console.error(message);
-      if (err instanceof MulterError) message += err.message;
-      else if (err instanceof Error) message += err.message;
-
-      res.status(401).json(message);
+      next(err);
     }
   });
 };
