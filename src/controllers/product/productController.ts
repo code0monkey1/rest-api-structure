@@ -39,9 +39,7 @@ const create = async (req: Request, res: Response) => {
   let product;
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   handleMultipartData(req, res, async (err) => {
-    if (err) {
-      throw CustomErrorHandler.multerError('Error at multer start');
-    }
+    if (err) throw CustomErrorHandler.multerError('Error at multer start');
 
     if (!req.file) throw CustomErrorHandler.multerError('File not received');
 
