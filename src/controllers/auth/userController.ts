@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+
 import { RefreshToken, User } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { hasUserAuth } from '../../types';
@@ -15,28 +16,36 @@ import { IRefreshToken } from './refreshTokenController';
  * back to the client. It contains methods and properties that allow you to manipulate the response,
  * such as `json()` which is used to send a JSON response.
  */
-const me = async (req: Request, res: Response): Promise<void> => {
-  //[+] Ensure that user Auth Info is present in the request object ,using a Type Guard
+const me = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    //[+] Ensure that user Auth Info is present in the request object ,using a Type Guard
 
-  if (!hasUserAuth(req))
-    throw CustomErrorHandler.userAuthFailed('user not attached');
+    if (!hasUserAuth(req))
+      throw CustomErrorHandler.userAuthFailed('user not attached');
 
-  //[+] Retrieve required user info , while removing the un-necessary fields
-  const EXCLUDED_FIELDS = '-password -updatedAt -createdAt -__v';
+    //[+] Retrieve required user info , while removing the un-necessary fields
+    const EXCLUDED_FIELDS = '-password -updatedAt -createdAt -__v';
 
-  /*  The `select` method is used to
+    /*  The `select` method is used to
     specify which fields should be included or excluded from the result. In this case, the
     `-password -updatedAt -createdAt -__v` fields are excluded from the result. */
 
-  const foundUser = await User.findById(req.user._id).select(EXCLUDED_FIELDS);
+    const foundUser = await User.findById(req.user._id).select(EXCLUDED_FIELDS);
 
-  console.log('🚀 ~ file: userController.ts:15 ~ foundUser:', foundUser);
-  //[+] If user not found - throw appropriate error
-  if (!foundUser) throw CustomErrorHandler.notFound('User Not Found');
+    console.log('🚀 ~ file: userController.ts:15 ~ foundUser:', foundUser);
+    //[+] If user not found - throw appropriate error
+    if (!foundUser) throw CustomErrorHandler.notFound('User Not Found');
 
-  //[+] Return user information
+    //[+] Return user information
 
-  res.json(foundUser);
+    res.json(foundUser);
+  } catch (err) {
+    next(err);
+  }
 };
 
 /**

@@ -1,6 +1,5 @@
 import express from 'express';
-require('express-async-errors');
-
+import 'express-async-errors';
 //rest
 import { APP_PORT } from './config';
 import errorHandler from './middlewares/errorHandler';

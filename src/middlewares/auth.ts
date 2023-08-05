@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+
 import { JWT_SECRET } from '../config';
 import CustomErrorHandler from '../services/CustomErrorHandler';
 import JwtService from '../services/JwtService';

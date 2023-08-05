@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
+import { MulterError } from 'multer';
 import { ZodError } from 'zod';
 import { DEBUG_MODE } from '../config';
+import CustomErrorHandler from '../services/CustomErrorHandler';
 
 /**
  * The `errorHandler` function handles errors and sends an appropriate response with a status code and
@@ -22,7 +24,7 @@ const errorHandler = (
   error: Error,
   _req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ) => {
   let statusCode = 500;
 
@@ -38,23 +40,27 @@ const errorHandler = (
   console.error(`errorHandler triggered: ${error.message}`);
   console.error('---');
 
-  if (error.name === 'CastError')
-    return res.status(400).send({ success: false, message: error.message });
+  // if (error.name === 'CastError')
+  //   return res.status(400).send({ success: false, message: error.message });
 
-  if (error.name === 'ValidationError')
-    return res.status(400).json({ success: false, message: error.message });
-  if (error.name === 'ReferenceError')
-    return res.status(400).json({ success: false, message: error.message });
-  if (error.name === 'JsonWebTokenError')
-    return res.status(401).json({ success: false, message: 'invalid jwt' });
-  if (error.name === 'MongoServerError')
-    return res.status(400).json({ success: false, message: error.message });
-  if (error.name === 'TypeError')
-    return res.status(400).json({ success: false, message: error.message });
-  if (error.name === 'TokenExpiredError')
-    return res.status(401).json({ success: false, message: 'jwt expired' });
-
-  if (error instanceof ZodError) {
+  // if (error.name === 'ValidationError')
+  //   return res.status(400).json({ success: false, message: error.message });
+  // if (error.name === 'ReferenceError')
+  //   return res.status(400).json({ success: false, message: error.message });
+  // if (error.name === 'JsonWebTokenError')
+  //   return res.status(401).json({ success: false, message: 'invalid jwt' });
+  // if (error.name === 'MongoServerError')
+  //   return res.status(400).json({ success: false, message: error.message });
+  // if (error.name === 'TypeError')
+  //   return res.status(400).json({ success: false, message: error.message });
+  // if (error.name === 'TokenExpiredError')
+  //   return res.status(401).json({ success: false, message: 'jwt expired' });
+  if (error instanceof CustomErrorHandler) {
+    statusCode = error.status;
+    data = {
+      message: error.message,
+    };
+  } else if (error instanceof ZodError) {
     /* The line `statusCode = 422;` is assigning the value 422 to the variable `statusCode`. This
     variable is used to determine the HTTP status code that will be sent in the response. In this
     case, if the error is an instance of `ZodError`, the status code will be set to 422
@@ -66,9 +72,18 @@ const errorHandler = (
         .map((issue) => `${issue.path.join('.')} ${issue.message}`)
         .join(', '),
     };
+    res.status(statusCode).json(data);
+  } else {
+    if (error instanceof MulterError) {
+      // A Multer error occurred when uploading.
+      res.status(400).send('A Multer error occurred when uploading.');
+    } else {
+      // An unknown error occurred when uploading.
+      res.status(400).send('Something went wrong');
+    }
   }
 
-  return res.json(data).status(statusCode);
+  next(error);
 };
 
 export default errorHandler;

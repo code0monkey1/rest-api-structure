@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { REFRESH_TOKEN_SECRET } from '../../config';
 import { RefreshToken, User } from '../../models';
 import { IUser } from '../../models/UserModel';

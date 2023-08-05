@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
+
 import fs from 'fs';
-import multer from 'multer';
+import multer, { MulterError } from 'multer';
 import path from 'path';
 import { APP_ROOT } from '../../config';
 import { Product } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { productValidator } from '../../validation';
-
 //[+]1. Setting up multer function
 /* The `storage` variable is an instance of `multer.diskStorage`, which is a storage engine for
 `multer` that allows you to define how files should be stored on the disk. */
@@ -36,53 +36,73 @@ const handleMultipartData = multer({
 // eslint-disable-next-line @typescript-eslint/require-await
 const create = async (req: Request, res: Response) => {
   // Multipart form data
-  let product;
+
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   handleMultipartData(req, res, async (err) => {
-    if (err) throw CustomErrorHandler.multerError('❌ Error at multer start');
-
-    if (!req.file || !req.file.path)
-      throw CustomErrorHandler.multerError('❌ File not received');
-
-    const filePath = req.file.path;
-
-    console.log('filePath ', filePath);
-
-    //[+]validate the form data for product fileds
-
-    //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart form
-
     try {
-      const body: unknown = await req.body;
-      console.log('product body', JSON.stringify(body, null, 2));
-      //[+] Extract product fields from the body and create a Product document
-      const { name, price, size } = productValidator.parse(body);
-      console.log(
-        '🚀 ~ file: productController.ts:56 ~ handleMultipartData ~ const { name, price, size }:',
-        name,
-        price,
-        size
-      );
+      let product;
 
-      product = await Product.create({
-        name,
-        price,
-        size,
-        image: filePath,
-      });
+      if (err) throw CustomErrorHandler.multerError('❌ Error at multer start');
 
-      //[+]Delete the uploaded file in case of validation error
+      if (!req.file) {
+        throw CustomErrorHandler.multerError(
+          '❌ File Not Present in Multer Request'
+        );
+      }
+
+      const filePath = req.file.path;
+
+      console.log('filePath ', filePath);
+
+      //[+]validate the form data for product fileds
+
+      //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart form
+
+      try {
+        const body: unknown = await req.body;
+        console.log('product body', JSON.stringify(body, null, 2));
+        //[+] Extract product fields from the body and create a Product document
+        const { name, price, size } = productValidator.parse(body);
+        console.log(
+          '🚀 ~ file: productController.ts:56 ~ handleMultipartData ~ const { name, price, size }:',
+          name,
+          price,
+          size
+        );
+
+        product = await Product.create({
+          name,
+          price,
+          size,
+          image: filePath,
+        });
+
+        //[+]Delete the uploaded file in case of validation error
+      } catch (err) {
+        //[+] Return error res in case error
+        fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
+          if (err)
+            throw CustomErrorHandler.multerError('Could not delete file');
+          else console.log('✅ Uploaded file deleted');
+        });
+        throw CustomErrorHandler.multerError('Product Auth Failed');
+      }
+
+      return res.status(201).json(product);
     } catch (err) {
-      //[+] Return error res in case error
-      fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
-        if (err) return CustomErrorHandler.multerError('Could not delete file');
-        else console.log('✅ Uploaded file deleted');
-      });
-      return res.status(401).json(err);
+      if (err instanceof MulterError) {
+        console.log('Multer Error !!');
+        res.status(401).json(err.message);
+      } else {
+        let message = 'MulterError :';
+        if (err instanceof Error) {
+          message += err.message;
+        }
+
+        res.status(401).json(message);
+      }
     }
   });
-
-  res.status(201).json(product);
 };
 
 const update = async (req: Request, res: Response) => {
