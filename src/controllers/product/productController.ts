@@ -42,11 +42,14 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       let product;
 
-      if (err) throw CustomErrorHandler.multerError('❌ Error at multer start');
+      if (err)
+        return next(CustomErrorHandler.multerError('❌ Error at multer start'));
 
       if (!req.file) {
-        throw CustomErrorHandler.multerError(
-          '❌ File Not Present in Multer Request'
+        return next(
+          CustomErrorHandler.multerError(
+            '❌ File Not Present in Multer Request'
+          )
         );
       }
 
@@ -85,7 +88,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
             throw CustomErrorHandler.multerError('Could not delete file');
           else console.log('✅ Uploaded file deleted');
         });
-        return next(CustomErrorHandler.multerError('Product Auth Failed'));
+        return next(CustomErrorHandler.multerError((err as Error).message));
       }
 
       return res.status(201).json(product);
