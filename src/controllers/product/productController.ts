@@ -85,7 +85,7 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
             throw CustomErrorHandler.multerError('Could not delete file');
           else console.log('✅ Uploaded file deleted');
         });
-        throw CustomErrorHandler.multerError('Product Auth Failed');
+        return next(CustomErrorHandler.multerError('Product Auth Failed'));
       }
 
       return res.status(201).json(product);
