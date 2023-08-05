@@ -82,7 +82,7 @@ const create = async (req: Request, res: Response) => {
     }
   });
 
-  return res.status(201).json(product);
+  res.status(201).json(product);
 };
 
 const update = async (req: Request, res: Response) => {
