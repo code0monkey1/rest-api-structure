@@ -90,17 +90,12 @@ const create = async (req: Request, res: Response) => {
 
       return res.status(201).json(product);
     } catch (err) {
-      if (err instanceof MulterError) {
-        console.log('Multer Error !!');
-        res.status(401).json(err.message);
-      } else {
-        let message = 'MulterError :';
-        if (err instanceof Error) {
-          message += err.message;
-        }
+      let message = 'MulterError :';
+      console.error(message);
+      if (err instanceof MulterError) message += err.message;
+      else if (err instanceof Error) message += err.message;
 
-        res.status(401).json(message);
-      }
+      res.status(401).json(message);
     }
   });
 };
