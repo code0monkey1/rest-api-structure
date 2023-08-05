@@ -24,7 +24,7 @@ const errorHandler = (
   error: Error,
   _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   let statusCode = 500;
 
@@ -82,8 +82,6 @@ const errorHandler = (
       res.status(400).send('Something went wrong');
     }
   }
-
-  next(error);
 };
 
 export default errorHandler;
