@@ -76,7 +76,7 @@ const create = async (req: Request, res: Response) => {
         if (err) throw CustomErrorHandler.multerError('Could not delete file');
         else console.log('Uploaded file deleted');
       });
-      return res.send((err as Error).message);
+      return res.status(401).json(err);
     }
   });
 
