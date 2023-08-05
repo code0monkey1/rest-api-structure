@@ -41,7 +41,9 @@ const create = async (req: Request, res: Response) => {
   handleMultipartData(req, res, async (err) => {
     if (err) throw CustomErrorHandler.multerError((err as Error).message);
 
-    const filePath = req?.file?.path;
+    if (!req.file) throw CustomErrorHandler.multerError('File not received');
+
+    const filePath = req.file.path;
     console.log('filePath', filePath);
 
     //[+]validate the form data for product fileds
