@@ -5,7 +5,7 @@ class EncryptionService {
    * The function compares a hashed token with a provided token and returns a boolean indicating
    * whether they match.
    * @param {string} hashedToken - The `hashedToken` parameter is a string that represents a token that
-   * has been hashed using a cryptographic algorithm. This is typically used for security purposes,
+   * has been hashed using a cryptographic algorithm. This is typically used for security purposes,es
    * such as storing passwords securely in a database.
    * @param {string} providedToken - The `providedToken` parameter is the token that is being provided
    * by the user or client. It is the token that needs to be compared with the hashed token to check if
