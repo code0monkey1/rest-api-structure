@@ -32,7 +32,7 @@ const handleMultipartData = multer({
 }).single('image'); // 5mb
 
 //[+] Function to create a new product
-
+//! doing normal  async error handling using next ,as multer seems to not work with express async errors
 // eslint-disable-next-line @typescript-eslint/require-await
 const create = async (req: Request, res: Response, next: NextFunction) => {
   // Multipart form data
