@@ -10,6 +10,7 @@
     "es6": true
   },
   "rules": {
+    "indent": ["error", 2],
     "@typescript-eslint/semi": ["error"],
     "@typescript-eslint/no-explicit-any": ["error"],
     "@typescript-eslint/explicit-function-return-type": "off",
@@ -24,7 +25,6 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json",
-    "useTabs": true
+    "project": "./tsconfig.json"
   }
 }
