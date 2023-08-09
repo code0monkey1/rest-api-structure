@@ -195,7 +195,7 @@ const remove = async (req: Request, res: Response) => {
 };
 
 const getAll = async (req: Request, res: Response) => {
-  const products = await Product.find();
+  const products = await Product.find().select('-updatedAt -__v');
 
   res.json(products);
 };
