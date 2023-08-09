@@ -197,7 +197,7 @@ const remove = async (req: Request, res: Response) => {
 const getAll = async (req: Request, res: Response) => {
   const products = await Product.find()
     .select('-updatedAt -__v')
-    .sort({ id: -1 });
+    .sort({ id: -1 }); //? ascending order
 
   res.json(products);
 };
