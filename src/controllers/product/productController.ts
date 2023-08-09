@@ -131,6 +131,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
             price,
             size
           );
+          const id = req.params.id;
 
           product = await Product.findOneAndUpdate(
             { id },
