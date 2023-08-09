@@ -142,7 +142,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
               ...(req.file && { image: filePath }), // ?this will include the updated image ,if the image is present in the  update request
             }
           );
-
+          return res.status(201).json(product);
           //[+]Delete the uploaded file in case of validation error
         } catch (err) {
           //[+] Return error res in case error
@@ -157,8 +157,6 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
             return next(CustomErrorHandler.multerError((err as Error).message));
           }
         }
-
-        return res.status(201).json(product);
       } catch (err) {
         next(err);
       }
