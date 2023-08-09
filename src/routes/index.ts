@@ -33,4 +33,6 @@ router.post('/products', [auth, admin], productController.create);
 
 router.put('/products/:id', [auth, admin], productController.update);
 
+router.delete('/products/:id', [auth, admin], productController.remove);
+
 export default router;
