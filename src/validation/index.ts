@@ -33,6 +33,7 @@ export const productValidator = z.object({
   name: z.string(),
   price: z.string(),
   size: z.string(),
+  image: z.string().optional(),
 });
 
 export default {

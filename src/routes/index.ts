@@ -30,6 +30,7 @@ router.post('/logout', [auth], userController.logout);
 //products
 
 router.post('/products', [auth, admin], productController.create);
-router.put('/products/:id', productController.update);
+
+router.put('/products/:id', [auth, admin], productController.update);
 
 export default router;

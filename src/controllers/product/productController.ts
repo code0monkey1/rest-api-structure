@@ -98,30 +98,97 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const update = async (req: Request, res: Response) => {
-  //[ ] 1.Find the product
+const update = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    handleMultipartData(req, res, async (err) => {
+      try {
+        let product;
+        let filePath;
+        if (err)
+          return next(
+            CustomErrorHandler.multerError('❌ Error at multer start')
+          );
+        //[ ]1. If file is present,only then get it's path ( file is optional in update)
+        if (req.file) {
+          filePath = req.file.path;
+        }
 
-  const id = req.params.id;
+        console.log('filePath ', filePath);
 
-  //[ ] 2. ensure that the user has the auth to update the product
-  //?? Already checked using admin middleware
+        //[+]validate the form data for product fileds
 
-  // [ ]2. If Not found return product not found
-  const product = await Product.findById(id);
+        //[-] You need to go to the `server.ts` file and apply the middleware to parse multipart form
 
-  if (!product) throw CustomErrorHandler.notFound('Product Not Found');
-  // [ ]3. If found use put to parse the request and update the product
+        try {
+          const body: unknown = await req.body;
+          console.log('product body', JSON.stringify(body, null, 2));
+          //[+] Extract product fields from the body and create a Product document
+          const { name, price, size } = productValidator.parse(body);
+          console.log(
+            '🚀 ~ file: productController.ts:56 ~ handleMultipartData ~ const { name, price, size }:',
+            name,
+            price,
+            size
+          );
 
-  const updatedProduct = await Product.findOneAndUpdate(
-    { id }
-    // { ...req.body }
-  );
+          product = await Product.findOneAndUpdate(
+            { id },
+            {
+              name,
+              price,
+              size,
+              ...(req.file && { image: filePath }), // ?this will include the updated image ,if the image is present in the  update request
+            }
+          );
 
-  // [ ]4. Return the updated product to the frontend
+          //[+]Delete the uploaded file in case of validation error
+        } catch (err) {
+          //[+] Return error res in case error
 
-  console.log(updatedProduct);
+          //[ ] To do only in case file is present , else no need to remove
+          if (req.file) {
+            fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
+              if (err)
+                throw CustomErrorHandler.multerError('Could not delete file');
+              else console.log('✅ Uploaded file deleted');
+            });
+            return next(CustomErrorHandler.multerError((err as Error).message));
+          }
+        }
 
-  res.status(201).json(updatedProduct);
+        return res.status(201).json(product);
+      } catch (err) {
+        next(err);
+      }
+    });
+
+    //[ ] 1.Find the product
+
+    const id = req.params.id;
+
+    //[ ] 2. ensure that the user has the auth to update the product
+    //?? Already checked using admin middleware
+
+    // [ ]2. If Not found return product not found
+    const product = await Product.findById(id);
+
+    if (!product) throw CustomErrorHandler.notFound('Product Not Found');
+    // [ ]3. If found use put to parse the request and update the product
+
+    const updatedProduct = await Product.findOneAndUpdate(
+      { id }
+      // { ...req.body }
+    );
+
+    // [ ]4. Return the updated product to the frontend
+
+    console.log(updatedProduct);
+
+    res.status(201).json(updatedProduct);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default {
