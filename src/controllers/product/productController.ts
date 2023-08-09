@@ -169,7 +169,22 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const remove = async (req: Request, res: Response) => {
+  //[ ]1. First get the product with the specified ID
+
+  const id = req.params.id;
+
+  const product = await Product.findById(id);
+
+  if (!product)
+    throw CustomErrorHandler.notFound(`Product with id:${id} not found!`);
+
+  res.send(product).status(200);
+  // [ ]2. Second , delete the product if present , if not , raise error
+};
+
 export default {
   create,
   update,
+  remove,
 };
