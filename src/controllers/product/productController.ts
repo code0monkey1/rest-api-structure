@@ -207,9 +207,21 @@ const getAll = async (req: Request, res: Response) => {
   res.json(products);
 };
 
+const getOne = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const product = await Product.findById(id);
+
+  if (!product)
+    throw CustomErrorHandler.notFound(`product with id ${id} not found`);
+
+  res.json(product);
+};
+
 export default {
   create,
   update,
   remove,
   getAll,
+  getOne,
 };

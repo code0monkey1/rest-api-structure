@@ -35,4 +35,8 @@ router.put('/products/:id', [auth, admin], productController.update);
 
 router.delete('/products/:id', [auth, admin], productController.remove);
 
+router.get('/products', productController.getAll);
+
+router.get('/products/:id', productController.getOne);
+
 export default router;
