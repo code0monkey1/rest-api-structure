@@ -140,7 +140,8 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
               price,
               size,
               ...(req.file && { image: filePath }), // ?this will include the updated image ,if the image is present in the  update request
-            }
+            },
+            { new: true } //? will get updated data in response
           );
           return res.status(201).json(product);
           //[+]Delete the uploaded file in case of validation error
