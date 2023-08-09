@@ -197,7 +197,7 @@ const remove = async (req: Request, res: Response) => {
     else console.log('✅ Uploaded file deleted');
   });
 
-  res.send(product).status(200);
+  res.json(product);
   // [ ]2. Second , delete the product if present , if not , raise error
 };
 
