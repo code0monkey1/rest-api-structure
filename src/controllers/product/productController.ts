@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import fs from 'fs';
+import { Document } from 'mongoose';
 import multer from 'multer';
 import path from 'path';
 import { APP_ROOT } from '../../config';
@@ -169,15 +170,32 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+interface IProductDocument extends Document {
+  _doc: {
+    image?: string;
+  };
+}
+
 const remove = async (req: Request, res: Response) => {
   //[ ]1. First get the product with the specified ID
 
   const id = req.params.id;
 
-  const product = await Product.findByIdAndDelete(id);
+  const product = (await Product.findByIdAndDelete(id)) as IProductDocument;
 
   if (!product)
     throw CustomErrorHandler.notFound(`Product with id:${id} not found!`);
+
+  //[ ] delete image too
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+
+  const filePath = product._doc.image;
+
+  fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
+    if (err) throw CustomErrorHandler.multerError('Could not delete file');
+    else console.log('✅ Uploaded file deleted');
+  });
 
   res.send(product).status(200);
   // [ ]2. Second , delete the product if present , if not , raise error
