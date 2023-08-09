@@ -201,8 +201,15 @@ const remove = async (req: Request, res: Response) => {
   // [ ]2. Second , delete the product if present , if not , raise error
 };
 
+const getAll = async (req: Request, res: Response) => {
+  const products = await Product.find();
+
+  res.json(products);
+};
+
 export default {
   create,
   update,
   remove,
+  getAll,
 };
