@@ -174,7 +174,7 @@ const remove = async (req: Request, res: Response) => {
 
   const id = req.params.id;
 
-  const product = await Product.findById(id);
+  const product = await Product.findByIdAndDelete(id);
 
   if (!product)
     throw CustomErrorHandler.notFound(`Product with id:${id} not found!`);
