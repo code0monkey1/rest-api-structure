@@ -31,6 +31,7 @@ const productSchema = new Schema<IProduct>(
       type: String,
       required: true,
       get: (image: unknown) => {
+        //? this is done to get the current server address when retrieving the image location
         return `${APP_URL}/${image}`;
       },
     },
