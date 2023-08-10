@@ -195,7 +195,7 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
     console.log(filePath);
     fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
       if (err)
-        return next(CustomErrorHandler.multerError('Could not delete file'));
+        return next(CustomErrorHandler.multerError('❌ Could not delete file'));
       else console.log('✅ Uploaded file deleted');
     });
 
