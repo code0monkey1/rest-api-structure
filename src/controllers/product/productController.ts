@@ -90,7 +90,9 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
         //[+] Return error res in case error
         fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
           if (err)
-            throw CustomErrorHandler.multerError('Could not delete file');
+            return next(
+              CustomErrorHandler.multerError('Could not delete file')
+            );
           else console.log('✅ Uploaded file deleted');
         });
         return next(CustomErrorHandler.multerError((err as Error).message));
