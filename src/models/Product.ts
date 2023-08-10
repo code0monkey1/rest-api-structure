@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Document, Schema, model } from 'mongoose';
+import { APP_URL } from '../config';
 
 // Define the interface for the User document
 interface IProduct extends Document {
@@ -30,7 +31,7 @@ const productSchema = new Schema<IProduct>(
       type: String,
       required: true,
       get: function (this: IProduct) {
-        return process.env.SERVER_URL + this.image;
+        return APP_URL + this.image;
       },
     },
   },
