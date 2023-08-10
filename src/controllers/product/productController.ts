@@ -174,29 +174,36 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const remove = async (req: Request, res: Response) => {
-  //[+]1. First get the product with the specified ID
+const remove = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    //[+]1. First get the product with the specified ID
 
-  const id = req.params.id;
+    const id = req.params.id;
 
-  const product = (await Product.findByIdAndDelete(id)) as IProductDocument;
+    const product = (await Product.findByIdAndDelete(id)) as IProductDocument;
 
-  if (!product)
-    throw CustomErrorHandler.notFound(`Product with id:${id} not found!`);
+    if (!product)
+      return next(
+        CustomErrorHandler.notFound(`Product with id:${id} not found!`)
+      );
 
-  //[] delete image from the server (or other storage location)
+    //[] delete image from the server (or other storage location)
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  //[+]2. Get the path of the image file stored in the db ( before getter are invoked and the dynamic APP_URL is attached)
-  const filePath = product._doc.image;
-  console.log(filePath);
-  fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
-    if (err) throw CustomErrorHandler.multerError('Could not delete file');
-    else console.log('✅ Uploaded file deleted');
-  });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+    //[+]2. Get the path of the image file stored in the db ( before getter are invoked and the dynamic APP_URL is attached)
+    const filePath = product._doc.image;
+    console.log(filePath);
+    fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
+      if (err)
+        return next(CustomErrorHandler.multerError('Could not delete file'));
+      else console.log('✅ Uploaded file deleted');
+    });
 
-  res.json(product);
-  //[+] 2. Delete the product if present , if not , raise error
+    res.json(product);
+    //[+] 2. Delete the product if present , if not , raise error
+  } catch (err) {
+    next(err);
+  }
 };
 
 const getAll = async (req: Request, res: Response) => {
