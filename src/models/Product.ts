@@ -30,14 +30,14 @@ const productSchema = new Schema<IProduct>(
     image: {
       type: String,
       required: true,
-      get: function (this: IProduct) {
-        return `${APP_URL}/${this.image}`;
+      get: (image: unknown) => {
+        return `${APP_URL}/${image}`;
       },
     },
   },
   {
     timestamps: true,
-    // toJSON: { getters: true },
+    toJSON: { getters: true },
   }
 );
 
