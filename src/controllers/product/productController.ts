@@ -1,12 +1,17 @@
 import { NextFunction, Request, Response } from 'express';
-
 import fs from 'fs';
+import { Document } from 'mongoose';
 import multer from 'multer';
 import path from 'path';
 import { APP_ROOT } from '../../config';
 import { Product } from '../../models';
 import CustomErrorHandler from '../../services/CustomErrorHandler';
 import { productValidator } from '../../validation';
+interface IProductDocument extends Document {
+  _doc: {
+    image: string;
+  };
+}
 //[+]1. Setting up multer function
 /* The `storage` variable is an instance of `multer.diskStorage`, which is a storage engine for
 `multer` that allows you to define how files should be stored on the disk. */
@@ -174,7 +179,7 @@ const remove = async (req: Request, res: Response) => {
 
   const id = req.params.id;
 
-  const product = await Product.findByIdAndDelete(id);
+  const product = (await Product.findByIdAndDelete(id)) as IProductDocument;
 
   if (!product)
     throw CustomErrorHandler.notFound(`Product with id:${id} not found!`);
@@ -182,8 +187,8 @@ const remove = async (req: Request, res: Response) => {
   //[] delete image from the server (or other storage location)
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-
-  const filePath = product.image;
+  //[+]2. Get the path of the image file stored in the db ( before getter are invoked and the dynamic APP_URL is attached)
+  const filePath = product._doc.image;
 
   fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
     if (err) throw CustomErrorHandler.multerError('Could not delete file');
