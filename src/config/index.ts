@@ -11,4 +11,5 @@ export const {
   JWT_SECRET,
   REFRESH_TOKEN_SECRET,
   APP_ROOT = path.resolve(__dirname, '../../'),
+  SERVER_URL,
 } = process.env;

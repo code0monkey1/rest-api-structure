@@ -29,6 +29,9 @@ const productSchema = new Schema<IProduct>(
     image: {
       type: String,
       required: true,
+      get: function (this: IProduct) {
+        return process.env.SERVER_URL + this.image;
+      },
     },
   },
   {
