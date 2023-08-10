@@ -28,7 +28,9 @@ server.use(express.json());
 const PORT = APP_PORT || 3000;
 
 server.use('/api', routes);
-
+//[+] Define url to serve static files
+//? To server any static files in your project , make a url eg :'/uploads , and then use `express.static('folder_name")` to make the file available through the api .
+//! Creating any extra api endpoints for static files in not required ,except the former step
 server.use('/uploads', express.static('uploads'));
 /* `server.use(errorHandler);` is adding the `errorHandler` middleware to the Express server. */
 
