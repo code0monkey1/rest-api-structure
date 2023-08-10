@@ -170,7 +170,7 @@ const update = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const remove = async (req: Request, res: Response) => {
-  //[ ]1. First get the product with the specified ID
+  //[+]1. First get the product with the specified ID
 
   const id = req.params.id;
 
@@ -179,7 +179,7 @@ const remove = async (req: Request, res: Response) => {
   if (!product)
     throw CustomErrorHandler.notFound(`Product with id:${id} not found!`);
 
-  //[ ] delete image from the server (or other storage location)
+  //[] delete image from the server (or other storage location)
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 
@@ -191,11 +191,10 @@ const remove = async (req: Request, res: Response) => {
   });
 
   res.json(product);
-  //[x] 2. Second , delete the product if present , if not , raise error
+  //[+] 2. Delete the product if present , if not , raise error
 };
 
 const getAll = async (req: Request, res: Response) => {
-  //[ ]1. You need to unsure you've added the
   const products = await Product.find()
     .select('-updatedAt -__v')
     .sort({ id: -1 }); //? ascending order
