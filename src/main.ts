@@ -28,6 +28,8 @@ server.use(express.json());
 const PORT = APP_PORT || 3000;
 
 server.use('/api', routes);
+
+server.use('/uploads', express.static('uploads'));
 /* `server.use(errorHandler);` is adding the `errorHandler` middleware to the Express server. */
 
 //this is the last middle ware to be added , as it catches all async errors
