@@ -191,9 +191,12 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
     //[+]2. Get the path of the image file stored in the db ( before getter are invoked and the dynamic APP_URL is attached)
-    const filePath = product._doc.image;
+
+    const filePath = `${APP_ROOT}/${product._doc.image}`;
+
     console.log(filePath);
-    fs.unlink(`${APP_ROOT}/${filePath}`, (err) => {
+
+    fs.unlink(filePath, (err) => {
       if (err) {
         return next(CustomErrorHandler.multerError('❌ Could not delete file'));
       } else console.log('✅ Uploaded file deleted');
