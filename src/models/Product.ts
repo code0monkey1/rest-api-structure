@@ -37,6 +37,7 @@ const productSchema = new Schema<IProduct>(
   },
   {
     timestamps: true,
+    toJSON: { getters: true },
   }
 );
 
