@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 
 import express from 'express';
+
 import {
   loginController,
   refreshTokenController,
@@ -15,3 +16,5 @@ router.post('/register', registerController.registerUser);
 router.post('/login', loginController.loginUser);
 
 router.post('/refresh', refreshTokenController.refresh);
+
+export default router;
