@@ -13,7 +13,7 @@ import { admin, auth } from '../middlewares';
 
 const router = express.Router();
 
-//user
+//Authentication routes
 
 router.post('/register', registerController.registerUser);
 
@@ -21,7 +21,7 @@ router.post('/login', loginController.loginUser);
 
 router.post('/refresh', refreshTokenController.refresh);
 
-//auth
+//user routes
 
 router.get('/me', [auth], userController.me);
 

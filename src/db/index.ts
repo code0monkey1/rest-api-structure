@@ -12,10 +12,7 @@ export const connectToDb = async () => {
 
     return;
   }
-  console.log(
-    '🚀 ~ file: index.ts:17 ~ connectToDb ~ DB_URL:',
-    process.env.DB_URL
-  );
+
   await mongoose.connect(DB_URL!, {
     dbName: 'rest-api',
     useNewUrlParser: true,
