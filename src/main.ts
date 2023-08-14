@@ -41,3 +41,5 @@ server.use(errorHandler);
 server.listen(PORT, () => {
   console.log('listening to port ', PORT);
 });
+
+export default server;

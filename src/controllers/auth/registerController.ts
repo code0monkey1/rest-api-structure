@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { REFRESH_TOKEN_SECRET } from '../../config';
 import { RefreshToken, User } from '../../models';
 import { IUser } from '../../models/UserModel';
@@ -15,56 +15,63 @@ type Tokens = {
 
 const registerUser = async (
   req: Request<RegisterUserRequest>,
-  res: Response<RegisterUserResponse, Tokens>
+  res: Response<RegisterUserResponse, Tokens>,
+  next: NextFunction
 ): Promise<void> => {
-  // [+] validate the request and extract info
-  const { username, email, password } = await registerSchema.parseAsync(
-    req.body
-  );
+  try {
+    // [+] validate the request and extract info
+    const { username, email, password } = await registerSchema.parseAsync(
+      req.body
+    );
 
-  //[+] check if user is in database already
-  const userExists = await User.exists({ email });
+    //[+] check if user is in database already
+    const userExists = await User.exists({ email });
 
-  if (userExists)
-    throw CustomErrorHandler.alreadyExists('This email is already taken');
+    if (userExists)
+      return next(
+        CustomErrorHandler.alreadyExists('This email is already taken')
+      );
 
-  //[+] hash password to encrypt
-  const hashedPassword = await EncryptionService.getHashedToken(password);
+    //[+] hash password to encrypt
+    const hashedPassword = await EncryptionService.getHashedToken(password);
 
-  //[+] create user object
-  const userInfo = {
-    username,
-    email,
-    password: hashedPassword,
-    role: Role.ADMIN,
-  };
+    //[+] create user object
+    const userInfo = {
+      username,
+      email,
+      password: hashedPassword,
+      role: Role.ADMIN,
+    };
 
-  //[+] save user to database
-  const user: IUser = await User.create(userInfo);
+    //[+] save user to database
+    const user: IUser = await User.create(userInfo);
 
-  //[+] create access_token
-  const access_token = await JwtService.sign({
-    _id: user._id as string,
-    role: user.role,
-  });
-
-  //[+] create refresh_token
-  const refresh_token = await JwtService.sign(
-    {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      _id: user.id,
+    //[+] create access_token
+    const access_token = await JwtService.sign({
+      _id: user._id as string,
       role: user.role,
-    },
-    '1y',
-    REFRESH_TOKEN_SECRET
-  );
+    });
 
-  //[+] save refresh_token to db
-  await RefreshToken.create({ token: refresh_token });
+    //[+] create refresh_token
+    const refresh_token = await JwtService.sign(
+      {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        _id: user.id,
+        role: user.role,
+      },
+      '1y',
+      REFRESH_TOKEN_SECRET
+    );
 
-  // [+] send response
-  const tokens: Tokens = { access_token, refresh_token };
-  res.json(tokens);
+    //[+] save refresh_token to db
+    await RefreshToken.create({ token: refresh_token });
+
+    // [+] send response
+    const tokens: Tokens = { access_token, refresh_token };
+    res.json(tokens);
+  } catch (err) {
+    next(err);
+  }
 };
 
 export default {

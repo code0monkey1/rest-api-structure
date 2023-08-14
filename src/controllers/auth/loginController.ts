@@ -13,6 +13,8 @@ const loginUser = async (
 ) => {
   //[+] validate login user schema
 
+  console.log('login user');
+
   const { email, password } = loginValidator.parse(req.body);
 
   console.log(
