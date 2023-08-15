@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1692093037238" clover="3.2.0">
-  <project timestamp="1692093037238" name="All files">
-    <metrics statements="330" coveredstatements="164" conditionals="63" coveredconditionals="5" methods="89" coveredmethods="21" elements="482" coveredelements="190" complexity="0" loc="330" ncloc="330" packages="13" files="24" classes="24"/>
+<coverage generated="1692093571214" clover="3.2.0">
+  <project timestamp="1692093571214" name="All files">
+    <metrics statements="330" coveredstatements="177" conditionals="63" coveredconditionals="12" methods="89" coveredmethods="23" elements="482" coveredelements="212" complexity="0" loc="330" ncloc="330" packages="13" files="24" classes="24"/>
     <package name="src">
       <metrics statements="15" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
       <file name="app.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/app.ts">
@@ -45,7 +45,7 @@
       </file>
     </package>
     <package name="src.controllers.auth">
-      <metrics statements="88" coveredstatements="46" conditionals="11" coveredconditionals="0" methods="20" coveredmethods="2"/>
+      <metrics statements="88" coveredstatements="47" conditionals="11" coveredconditionals="0" methods="20" coveredmethods="2"/>
       <file name="loginController.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/controllers/auth/loginController.ts">
         <metrics statements="22" coveredstatements="9" conditionals="4" coveredconditionals="0" methods="7" coveredmethods="0"/>
         <line num="2" count="1" type="stmt"/>
@@ -96,7 +96,7 @@
         <line num="73" count="1" type="stmt"/>
       </file>
       <file name="registerController.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/controllers/auth/registerController.ts">
-        <metrics statements="23" coveredstatements="21" conditionals="1" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <metrics statements="23" coveredstatements="22" conditionals="1" coveredconditionals="0" methods="2" coveredmethods="2"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
@@ -104,9 +104,9 @@
         <line num="7" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
+        <line num="20" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
+        <line num="23" count="2" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
         <line num="30" count="1" type="cond" truecount="0" falsecount="1"/>
         <line num="31" count="0" type="stmt"/>
@@ -118,7 +118,7 @@
         <line num="67" count="1" type="stmt"/>
         <line num="70" count="1" type="stmt"/>
         <line num="71" count="1" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
+        <line num="73" count="1" type="stmt"/>
         <line num="77" count="1" type="stmt"/>
       </file>
       <file name="userController.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/controllers/auth/userController.ts">
@@ -258,7 +258,7 @@
       </file>
     </package>
     <package name="src.middlewares">
-      <metrics statements="55" coveredstatements="18" conditionals="18" coveredconditionals="0" methods="12" coveredmethods="2"/>
+      <metrics statements="55" coveredstatements="30" conditionals="18" coveredconditionals="7" methods="12" coveredmethods="4"/>
       <file name="admin.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/middlewares/admin.ts">
         <metrics statements="9" coveredstatements="4" conditionals="3" coveredconditionals="0" methods="6" coveredmethods="0"/>
         <line num="3" count="1" type="stmt"/>
@@ -296,29 +296,29 @@
         <line num="71" count="1" type="stmt"/>
       </file>
       <file name="errorHandler.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/middlewares/errorHandler.ts">
-        <metrics statements="23" coveredstatements="6" conditionals="11" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <metrics statements="23" coveredstatements="18" conditionals="11" coveredconditionals="7" methods="2" coveredmethods="2"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
-        <line num="15" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="16" count="0" type="stmt"/>
-        <line num="17" count="0" type="stmt"/>
-        <line num="19" count="0" type="stmt"/>
-        <line num="21" count="0" type="stmt"/>
-        <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="28" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="33" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
+        <line num="33" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="38" count="1" type="stmt"/>
         <line num="41" count="0" type="cond" truecount="0" falsecount="1"/>
         <line num="43" count="0" type="stmt"/>
         <line num="44" count="0" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
         <line num="50" count="1" type="stmt"/>
       </file>
       <file name="index.ts" path="/Users/chiranjeevthomas/Documents/rest-api-structure/src/middlewares/index.ts">
@@ -428,7 +428,7 @@
         <metrics statements="7" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="2" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
         <line num="26" count="1" type="stmt"/>
         <line num="30" count="1" type="stmt"/>

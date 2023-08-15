@@ -4,9 +4,9 @@
   "description": "### So , what is Test Driven Development ?",
   "main": "build/src/server.js",
   "scripts": {
-    "test": "jest --runInBand --watchAll --coverage --verbose",
-    "dev": "ts-node-dev src/server.ts",
-    "start": "node build/src/server.js",
+    "test": "NODE_ENV=test jest --runInBand --watchAll --detectOpenHandles",
+    "dev": "NODE_ENV=dev ts-node-dev src/server.ts",
+    "start": "NODE_ENV=prod node build/src/server.js",
     "lint": "eslint --ext .ts ."
   },
   "repository": {
