@@ -2,32 +2,12 @@
 
 ## Setup
 
+1. Clone the repo
+1. Download it to your system
 1. ```bash
-    npm init -y
+       npm init
    ```
-
-1. ```bash
-    npm i express
-   ```
-
-1. ```bash
-    npm i -D ts-node-dev
-   ```
-
-1. ```bash
-    npm i dotenv
-
-   ```
-
-1. ```bash
-    npm i -D jest typescript @types/jest ts-jest
-
-   ```
-
-1. ```bash
-    npx ts-jest config:init
-
-   ```
+   **You're all set**
 
 ---
 
