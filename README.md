@@ -4,7 +4,7 @@
 
 1. Fork the repo
 1. Clone the repo - Download it to your system
-1.```bash
+```bash
           npm i
    ```
    
