@@ -5,9 +5,11 @@
 1. Clone the repo
 1. Download it to your system
 1. ```bash
-       npm i
+          npm i
    ```
-   **You're all set**
+   _You're all set_
+
+---
 
 ### Features:
 
