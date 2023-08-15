@@ -1,20 +1,34 @@
+import mongoose from 'mongoose';
 import supertest from 'supertest';
-import server from '../../src/server';
+import app from '../../src/app';
+import { connectToDb } from '../../src/db';
+import UserModel from '../../src/models/UserModel';
+import authHelper from './authHelper';
 
 describe('login-routes', () => {
-  it('should return a 401 error if username or password is incorrect', async () => {
-    const api = supertest(server);
+  const api = supertest(app);
+  beforeAll(async () => {
+    await connectToDb();
+  });
 
-    const response = await api.post('/api/register').send({
-      username: 'chiranjeev',
-      password: 'password12',
-      email: 'chiranjeev124@gmail.com',
-      repeat_password: 'password12',
-    });
+  beforeEach(async () => {
+    await UserModel.deleteMany({});
+  });
+  it('refresh_token and access_token is present for a successful api request', async () => {
+    //[+] Expect proper http status and response format
+    const response = await api
+      .post('/api/register')
+      .send(authHelper.user)
+      .expect(201)
+      .expect('Content-Type', /application\/json/);
 
-    console.log(response.body);
+    //[+]Expect access token and refresh token to be present
 
-    expect(response.status).toBe(401);
-    expect(response.body).toEqual({ message: 'Invalid username or password' });
+    expect(response.body.access_token).toBeDefined();
+    expect(response.body.refresh_token).toBeDefined();
+  });
+
+  afterAll(() => {
+    mongoose.disconnect();
   });
 });
