@@ -12,7 +12,6 @@ class JwtService {
     expiry = '60s',
     secret = JWT_SECRET!
   ) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     return jwt.sign(payload, secret, { expiresIn: expiry });
   }
 

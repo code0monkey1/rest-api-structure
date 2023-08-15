@@ -8,31 +8,29 @@ import { z } from 'zod';
   error messages and error paths when validating the data. */
 export const registerSchema = z
   .object({
-    username: z.string().min(3).max(20),
-    email: z.string().email(),
+    username: z.string().min(3).max(20).trim(),
+    email: z.string().email().trim(),
     password: z.string().min(6),
     repeat_password: z.string().min(6),
   })
   .refine((data) => data.password === data.repeat_password, {
-    message: "Passwords don't match",
+    message: " : Passwords don't match",
     path: ['repeat_password'], // path of error
   });
 
-registerSchema.refine((obj) => obj.password != obj.repeat_password);
-
 export const loginValidator = z.object({
-  email: z.string().email(),
+  email: z.string().email().trim(),
   password: z.string().min(6),
 });
 
 export const refreshTokenValidator = z.object({
-  refresh_token: z.string(),
+  refresh_token: z.string().trim(),
 });
 
 export const productValidator = z.object({
-  name: z.string(),
-  price: z.string(),
-  size: z.string(),
+  name: z.string().trim(),
+  price: z.string().trim(),
+  size: z.string().trim(),
   image: z.string().optional(),
 });
 

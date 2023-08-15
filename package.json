@@ -2,11 +2,11 @@
   "name": "tdd-fundamentals-in-typescript",
   "version": "1.0.0",
   "description": "### So , what is Test Driven Development ?",
-  "main": "build/src/main.js",
+  "main": "build/src/server.js",
   "scripts": {
-    "test": "jest --runInBand --watchAll --coverage",
-    "dev": "ts-node-dev src/main.ts",
-    "start": "node build/src/main.js",
+    "test": "jest --runInBand --watchAll --coverage --verbose",
+    "dev": "ts-node-dev src/server.ts",
+    "start": "node build/src/server.js",
     "lint": "eslint --ext .ts ."
   },
   "repository": {

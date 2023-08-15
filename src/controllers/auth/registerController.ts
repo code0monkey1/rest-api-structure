@@ -68,7 +68,7 @@ const registerUser = async (
 
     // [+] send response
     const tokens: Tokens = { access_token, refresh_token };
-    res.json(tokens);
+    res.status(201).json(tokens);
   } catch (err) {
     next(err);
   }
