@@ -1,12 +1,13 @@
-# REST API for E-Commerce Application using Typescript
+# REST API for an E-Commerce Application using Typescript
 
 ## Setup
 
 1. Fork the repo
 1. Clone the repo - Download it to your system
-1. Run :```bash
+1.```bash
           npm i
    ```
+   
    _You're all set_
 
 ---
