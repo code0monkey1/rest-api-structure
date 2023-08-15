@@ -5,7 +5,7 @@
 1. Clone the repo
 1. Download it to your system
 1. ```bash
-       npm init
+       npm i
    ```
    **You're all set**
 
